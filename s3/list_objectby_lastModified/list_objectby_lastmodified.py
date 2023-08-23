@@ -1,5 +1,4 @@
 import boto3
-import datetime
 import pprint
 import io
 from datetime import date, datetime, timedelta
@@ -17,7 +16,7 @@ s3=boto3.resource('s3')
 
 # Print out bucket names
 for bucket in s3.buckets.all():
-    print(bucket.name)
+    print("Bucket name ", bucket.name)
     page=boto3.client('s3')
 # bucket_name = s3client.list_buckets() 
   #Create reusable Paginator
@@ -29,7 +28,7 @@ for bucket in s3.buckets.all():
 
  #Show Contents
 for object in filtered_iterator:
-  pp.pprint(object['Contents'])
+  pp.pprint(object)
 
 
 # # for bucketname in client.buckets.all():
