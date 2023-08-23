@@ -18,12 +18,12 @@ s3=boto3.resource('s3')
 # Print out bucket names
 for bucket in s3.buckets.all():
     print(bucket.name)
-
+    page=boto3.client('s3')
 # bucket_name = s3client.list_buckets() 
   #Create reusable Paginator
-    s3_paginator = s3.get_paginator('list_objects_v2')
+    s3_paginator = page.get_paginator('list_objects_v2')
     #Create Page Iterator from paginator
-    page_iterator = s3.paginate('bucket')
+    page_iterator = page.paginate('bucket')
     #Filter results on lastModified date
     filtered_iterator = page_iterator.search("Contents[?to_string(LastModified)>='\"2023-03-01 00:00:00+00:00\"'].Key")
 
