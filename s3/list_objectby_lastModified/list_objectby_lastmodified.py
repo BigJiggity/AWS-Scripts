@@ -8,24 +8,26 @@ from datetime import date, datetime, timedelta
 pp = pprint.PrettyPrinter(indent=4)
 
 # Instantiate session with local creds file in ~/.aws/credentials
-session = boto3.Session(profile_name='default')
+#session = boto3.Session(profile_name='default')
 
 # Create client object to interact with s3 endpoints
-s3client = session.client('s3')
+#s3client = session.client('s3')
 
-#get buckets
-bucket_name = s3client.list_buckets()
+s3=boto3.resource('s3')
 
-#iterate through buckets
-for bucket in bucket_name['Buckets']: 
-  # Create reusable Paginator
-  s3_paginator = s3client.get_paginator('list_objects_v2')
-  #Create Page Iterator from paginator
-  page_iterator = s3client.paginate(Bucket='bucket')
- #Filter results on lastModified date
-  filtered_iterator = page_iterator.search("Contents[?to_string(LastModified)>='\"2023-03-01 00:00:00+00:00\"'].Key")
+# Print out bucket names
+for bucket in s3.buckets.all():
+    print(bucket.name)
 
-#Show Contents
+# bucket_name = s3client.list_buckets() 
+  #Create reusable Paginator
+    s3_paginator = s3.get_paginator('list_objects_v2')
+    #Create Page Iterator from paginator
+    page_iterator = s3.paginate('bucket')
+    #Filter results on lastModified date
+    filtered_iterator = page_iterator.search("Contents[?to_string(LastModified)>='\"2023-03-01 00:00:00+00:00\"'].Key")
+
+ #Show Contents
 for object in filtered_iterator:
   pp.pprint(object['Contents'])
 
