@@ -23,7 +23,7 @@ for bucket in s3.buckets.all():
   #Create reusable Paginator
     s3_paginator = page.get_paginator('list_objects_v2')
     #Create Page Iterator from paginator
-    page_iterator = page.paginate('bucket')
+    page_iterator = s3_paginator.paginate('bucket')
     #Filter results on lastModified date
     filtered_iterator = page_iterator.search("Contents[?to_string(LastModified)>='\"2023-03-01 00:00:00+00:00\"'].Key")
 
