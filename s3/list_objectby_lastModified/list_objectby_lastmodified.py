@@ -1,6 +1,6 @@
 import boto3
 import pprint
-import io
+import csv
 from datetime import date, datetime, timedelta
 
 ## Set up pretty print for easier reading
@@ -31,6 +31,12 @@ for bucket in s3.buckets.all():
     
 ## Show Contents
 for object in filtered_iterator:
-  pp.pprint(object['LastModified'])
+  pp.pprint(object)
 
-  
+  ## output to csv
+  header = ['Bucket Name', 'Object Name', 'Last Modified Date']
+  with open('s3_old_data.csv', 'w', encoding='UTF8', newline='') as f:
+    ## write the header
+      writer.writerow(header)
+    ## write the data
+      writer.writerows(object)  
