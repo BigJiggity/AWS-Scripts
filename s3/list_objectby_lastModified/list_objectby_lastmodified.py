@@ -36,6 +36,7 @@ for object in filtered_iterator:
   ## output to csv
   header = ['Bucket Name', 'Object Name', 'Last Modified Date']
   data = [bucket.name, object]
+  ## create csv file
   with open('s3_old_data.csv', 'w', encoding='UTF8', newline='') as f:
     ## Define File 
     writer = csv.writer(f)
