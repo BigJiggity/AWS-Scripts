@@ -1,11 +1,16 @@
 import boto3
 import pprint
 import csv
+import os
 from datetime import date, datetime, timedelta
 
 ## Set up pretty print for easier reading
 pp = pprint.PrettyPrinter(indent=4)
 
+## Check if Data Directory exists, if not create data folder
+if not os.path.exists("Data"):
+    os.makedirs("Data")
+    
 ## Use Commented lines for SSO/Session logins for programatic access otherwise script uses default creds in ~/.aws/credentials
 
 #session = boto3.Session(profile_name='default')
@@ -29,18 +34,14 @@ for bucket in s3.buckets.all():
     ## Filter results on lastModified date
     filtered_iterator = bucket_iterator.search("Contents[?to_string(LastModified)>='\"2019-08-01 00:00:00+00:00\"'].Key")
     
-# ## Show Contents - Iterate the bucket
-#for object in filtered_iterator:
-#   pp.pprint(object)
-
 ## Iterate through buckets, creating a csv per bucket
     for b in bucket.name:  
       ## create csv file
-      with open('%s_s3_old_data.csv' %bucket.name, 'w', encoding='UTF8', newline='') as f:
+      with open('Data/%s_s3_old_data.csv' %bucket.name, 'w', encoding='UTF8', newline='') as f:
         ## write the file 
         writer = csv.writer(f) 
 
-    with open('%s_s3_old_data.csv' %bucket.name, 'a', encoding='UTF8',) as f:
+    with open('Data/%s_s3_old_data.csv' %bucket.name, 'a', encoding='UTF8',) as f:
         writer = csv.writer(f)
       ## define variables for header row
         header = ['Bucket_Name', 'Object_Name', 'Last_Modified_Date',] 
