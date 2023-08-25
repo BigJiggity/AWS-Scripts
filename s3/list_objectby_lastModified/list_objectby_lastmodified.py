@@ -18,7 +18,7 @@ s3=boto3.resource('s3')
 
 ## Print out bucket names
 for bucket in s3.buckets.all():
-    print("Bucket name ", bucket.name)
+    print("Bucket name: ", bucket.name)
     
     ## Setup Paginate to iterate through buckets/objects
     page=boto3.client('s3')
@@ -29,18 +29,29 @@ for bucket in s3.buckets.all():
     ## Filter results on lastModified date
     filtered_iterator = bucket_iterator.search("Contents[?to_string(LastModified)>='\"2019-08-01 00:00:00+00:00\"'].Key")
     
-## Show Contents
-for object in filtered_iterator:
-  pp.pprint(object)
+# ## Show Contents - Iterate the bucket
+#for object in filtered_iterator:
+#   pp.pprint(object)
 
-  ## output to csv
-  header = ['Bucket Name', 'Object Name', 'Last Modified Date']
-  data = [bucket.name, object]
-  ## create csv file
-  with open('s3_old_data.csv', 'w', encoding='UTF8', newline='') as f:
-    ## Define File 
-    writer = csv.writer(f)
-    ## write the header
-    writer.writerow(header)
-    ## write the data
-    writer.writerows(data)  
+## Iterate through buckets, creating a csv per bucket
+    for b in bucket.name:  
+      ## create csv file
+      with open('%s_s3_old_data.csv' %bucket.name, 'w', encoding='UTF8', newline='') as f:
+        ## write the file 
+        writer = csv.writer(f) 
+
+    with open('%s_s3_old_data.csv' %bucket.name, 'a', encoding='UTF8',) as f:
+        writer = csv.writer(f)
+      ## define variables for header row
+        header = ['Bucket_Name', 'Object_Name', 'Last_Modified_Date',] 
+        ## write the header
+        writer.writerow(header)  
+        ## Iterate the data
+        for o in filtered_iterator: 
+          ## define variables for data rows
+          data = ['%s' %bucket.name, '%s' %o,]
+          ## Write data to file
+          writer.writerow(data)
+          
+        
+ 
