@@ -13,10 +13,10 @@ if not os.path.exists("Data"):
     
 ## Use Commented lines for SSO/Session logins for programatic access otherwise script uses default creds in ~/.aws/credentials
 
-#session = boto3.Session(profile_name='default')
+session = boto3.Session(profile_name='342727989639_StorageLensAccess')
 
 ## Create client object to interact with s3 endpoints
-#s3client = session.client('s3')
+s3client = session.client('s3')
 
 #Create resource
 s3=boto3.resource('s3')
