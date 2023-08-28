@@ -43,10 +43,10 @@ for bucket in bkts['Buckets']:
     for object in bn.objects.all():
          lastmod = object.last_modified
          date = datetime.strptime(lastmod, '%Y-%m-%d %H:%M:%S')
-
-         ## TypeError: '<=' not supported between instances of 'datetime.datetime' and 'str'
-         if lastmod <= check_date: 
-            filtered_obj = lastmod
+         print(date)
+         #### TypeError: '<=' not supported between instances of 'datetime.datetime' and 'str' ####
+        #  if lastmod <= check_date: 
+        #     filtered_obj = lastmod
        
     ## Print filtered results
     for f in filtered_obj:    
