@@ -2,7 +2,7 @@ import boto3
 import pprint
 import csv
 import os
-import datetime
+from datetime import datetime, timedelta
 
 ## Set up pretty print for easier reading
 pp = pprint.PrettyPrinter(indent=4)
@@ -26,30 +26,39 @@ s3=boto3.client('s3')
 # ## FINISHED: Gather Buckets
 bkts = s3.list_buckets()
 
-## Date Ranges for checking last_modified
-check_date = datetime.datetime.now().isoformat()
-
 ## FINISHED: Output the bucket names
 for bucket in bkts['Buckets']:
      mybucket = (bucket["Name"])
-    
-    ## FINISHED: Get a bucket, and list all objects in the bucket
-bn = s3r.Bucket(bucket["Name"])
-files_in_bucket = list(bn.objects.all())
-    
-    # Test for last_modified
-for object in files_in_bucket:
-    lastmod = object.last_modified
-    print(lastmod)
-    print(check_date)
 
-    #### TypeError: '<=' not supported between instances of 'datetime.datetime' and 'str' ####
-    if lastmod >= check_date: 
-        filtered_obj = lastmod
+# Get the current date
+current_date = datetime.now()
+
+# Get the list of objects in the bucket
+objects = s3.list_objects_v2(Bucket=mybucket)['Contents']
+
+# Iterate over each object and check if it hasn't been modified in the past 3 years
+for obj in objects:
+    last_modified = obj['LastModified']
+    if last_modified < current_date - timedelta(days=3*365):
+        print(obj['Key'], obj['last_modified'], obj['size'], obj['storage_class'])   
+# ## FINISHED: Get a bucket, and list all objects in the bucket
+# bn = s3r.Bucket(bucket["Name"])
+# files_in_bucket = list(bn.objects.all())
+
     
-    ## Print filtered results
-    for f in filtered_obj:    
-        print(object.key, object.last_modified, object.size, object.storage_class)
+# ## Test for last_modified
+# for object in files_in_bucket:
+#     lastmod = object.last_modified
+#     print(lastmod)
+#     print(check_date)
+
+#     #### TypeError: '<=' not supported between instances of 'datetime.datetime' and 'str' ####
+#     if lastmod >= check_date: 
+#         filtered_obj = lastmod
+    
+#     ## Print filtered results
+#     for f in filtered_obj:    
+#         print(object.key, object.last_modified, object.size, object.storage_class)
    ################################################
    
 # # Create reusable Paginator
