@@ -53,30 +53,21 @@ for bucket in buckets:
             # for b in buckets:
 
             # create csv file
-            with open('Data/%s_s3_old_data.csv' % bucket.name, 'w', encoding='UTF8', newline='') as f:
+            csv_file = open('Data/%s_s3_old_data.csv' %bucket.name, 'w', newline='')
+            csv_writer = csv.writer(csv_file)
+                 
+            # define values for header row
+            header = ['Object_Name', 'Last_Modified_Date',
+                    'Object Size', 'Storage Class', 'Owner']
 
-                # call writer for csv
-                writer = csv.writer(f)
-
-                # define values for header row
-                header = ['Object_Name', 'Last_Modified_Date',
-                        'Object Size', 'Storage Class', 'Owner']
-
-                # write the header to csv
-                writer.writerow(header)
-
-                # Iterate the data and assign variables
-                # for o in bucket.objects.all():
+            # write the header to csv
+            csv_writer.writerow(header)
                     
-            ## Open csv file to write data
-            with open('Data/%s_s3_old_data.csv' % bucket.name, 'w', encoding='UTF8', newline='') as f:
-
-                # call writer for csv
-                writer = csv.writer(f)
-                
+            ## Iterate through objects
+            for d in bucket.objects.all():
                 # define variables for data rows
                 data = ['%s' % obj.key, '%s' % obj.last_modified, '%s' %
                         obj.size, '%s' % obj.storage_class, '%s' % obj.owner]
 
-                # Write data to csv
-                writer.writerow(data)
+                ## Write Data to csv
+                csv_writer.writerow(data)
