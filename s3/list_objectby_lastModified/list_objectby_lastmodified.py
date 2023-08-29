@@ -17,6 +17,10 @@ if not os.path.exists("Data"):
     os.makedirs("Data")
 
 def get_bucket_data(buckets: list) -> None:
+        """ 
+        Method to get data from each bucket and store in a CSV file
+        Args: buckets (list): List of buckets to get data from
+        """
         ## Iterate through each bucket
         for bucket in buckets:
                 logging.info("Getting data for bucket: %s", bucket.name)
