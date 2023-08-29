@@ -4,10 +4,10 @@ import csv
 import os
 from datetime import date
 
-# Set up pretty print for easier reading
+## Set up pretty print for easier reading
 pp = pprint.PrettyPrinter(indent=4)
 
-# Check if Data Directory exists, if not create data folder
+## Check if Data Directory exists, if not create data folder
 if not os.path.exists("Data"):
     os.makedirs("Data")
 
@@ -28,46 +28,42 @@ s3 = boto3.resource('s3')
 # Main
 ########################################################################
 
-# Set date for how far back you want to check
-check_date = date(2020, 8, 28)
+## Set date for how far back you want to check
+check_date = date(2020, 8, 1)
 
-# Get all S3 buckets
+## Get all S3 buckets
 buckets = s3.buckets.all()
 
-# Iterate through each bucket
+
+## Iterate through each bucket
 for bucket in buckets:
+        
+        ## Create a CSV file for each bucket
+        csv_file = open('Data/%s_s3_old_data.csv' %bucket.name, 'w', newline='')
+        csv_writer = csv.writer(csv_file)
     
-    # List objects inside the bucket
-    for obj in bucket.objects.all():
+        ## List objects inside the bucket
+        for obj in bucket.objects.all():
 
-        # Convert last_modified time to year-month-day format
-        lstmod = obj.last_modified.date()
+            ## Convert last_modified time to year-month-day format
+            lstmod = obj.last_modified.date()
 
-        # Conditional check for object lastmodified date being 3+ years old
-        if lstmod >= check_date:
-            ########################################################################
-            # CSV Generator
-            ########################################################################
+            ## Conditional check for object lastmodified date being 3+ years old
+            if lstmod >= check_date: 
+                
+                    ## define values for header row
+                    header = ['Object_Name', 'Last_Modified_Date',
+                            'Object Size', 'Storage Class', 'Owner']
 
-            # Iterate through buckets, creating a csv per bucket
-            # for b in buckets:
-
-            # create csv file
-            csv_file = open('Data/%s_s3_old_data.csv' %bucket.name, 'w', newline='')
-            csv_writer = csv.writer(csv_file)
-                 
-            # define values for header row
-            header = ['Object_Name', 'Last_Modified_Date',
-                    'Object Size', 'Storage Class', 'Owner']
-
-            # write the header to csv
-            csv_writer.writerow(header)
+                
+                    csv_writer.writerow(header)
+                            
+                    ## Iterate through objects
+                    # for d in bucket.objects.all():
                     
-            ## Iterate through objects
-            for d in bucket.objects.all():
-                # define variables for data rows
-                data = ['%s' % obj.key, '%s' % obj.last_modified, '%s' %
-                        obj.size, '%s' % obj.storage_class, '%s' % obj.owner]
+                    ## define variables for data rows
+                    data = ['%s' % obj.key, '%s' % obj.last_modified, '%s' %
+                            obj.size, '%s' % obj.storage_class, '%s' % obj.owner]
 
-                ## Write Data to csv
-                csv_writer.writerow(data)
+                    ## Write Data to csv
+                    csv_writer.writerow(data)
