@@ -50,15 +50,6 @@ def get_bucket_data(buckets: list) -> None:
                                 csv_writer.writerow(data)
 
 if __name__ == "__main__":
-        ########################################################################
-        # Set Session or use 'default' AWS credentials and create resource
-        ########################################################################
-
-        # Use Commented lines for SSO/Session logins for programatic access otherwise script uses default creds in ~/.aws/credentials
-        # session = boto3.Session()
-
-        # Create client object to interact with s3 endpoints
-        # s3client = session.client('s3')
         
         try:
         ## Create resource
