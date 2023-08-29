@@ -39,31 +39,27 @@ buckets = s3.buckets.all()
 for bucket in buckets:
         
         ## Create a CSV file for each bucket
-        csv_file = open('Data/%s_s3_old_data.csv' %bucket.name, 'w', newline='')
+        csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
         csv_writer = csv.writer(csv_file)
-    
+
+        ## define values for header row
+        header = ['File_Name', 'Last_Modified_Date',
+                'File Size', 'Storage Class', 'Owner']
+
+        ## Write Header to csv
+        csv_writer.writerow(header)
+        
         ## List objects inside the bucket
         for obj in bucket.objects.all():
-
             ## Convert last_modified time to year-month-day format
             lstmod = obj.last_modified.date()
 
             ## Conditional check for object lastmodified date being 3+ years old
             if lstmod >= check_date: 
-                
-                    ## define values for header row
-                    header = ['Object_Name', 'Last_Modified_Date',
-                            'Object Size', 'Storage Class', 'Owner']
-
-                
-                    csv_writer.writerow(header)
                             
-                    ## Iterate through objects
-                    # for d in bucket.objects.all():
-                    
                     ## define variables for data rows
-                    data = ['%s' % obj.key, '%s' % obj.last_modified, '%s' %
-                            obj.size, '%s' % obj.storage_class, '%s' % obj.owner]
+                    data = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
+                            obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
 
                     ## Write Data to csv
                     csv_writer.writerow(data)
