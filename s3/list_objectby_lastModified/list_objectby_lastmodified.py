@@ -11,43 +11,42 @@ pp = pprint.PrettyPrinter(indent=4)
 if not os.path.exists("Data"):
     os.makedirs("Data")
     
-## Use Commented lines for SSO/Session logins for programatic access otherwise script uses default creds in ~/.aws/credentials
+## FINISHED: Use Commented lines for SSO/Session logins for programatic access otherwise script uses default creds in ~/.aws/credentials
 #session = boto3.Session()
-## Create client object to interact with s3 endpoints
+## FINISHED: Create client object to interact with s3 endpoints
 #s3client = session.client('s3')
 
-#Create client and resource
+## FINISHED: Create client and resource
 s3r=boto3.resource('s3')
 s3=boto3.client('s3')
 
 
 # ## WORKING EXTRACT ##
 # ################################################
-# ## Gather Buckets
+# ## FINISHED: Gather Buckets
 bkts = s3.list_buckets()
 
 ## Date Ranges for checking last_modified
 check_date = datetime.datetime.now().isoformat()
 
-## Output the bucket names
-print('Existing buckets:')
+## FINISHED: Output the bucket names
 for bucket in bkts['Buckets']:
-    pp.pprint(bucket["Name"])
-    mybucket = (bucket["Name"])
+     mybucket = (bucket["Name"])
     
-    ## Get a bucket, and list all objects in the bucket
-    bn = s3r.Bucket(bucket["Name"])
-    files_in_bucket = list(bn.objects.all())
+    ## FINISHED: Get a bucket, and list all objects in the bucket
+bn = s3r.Bucket(bucket["Name"])
+files_in_bucket = list(bn.objects.all())
     
     # Test for last_modified
-    for object in bn.objects.all():
-         lastmod = object.last_modified
-         date = datetime.strptime(lastmod, '%Y-%m-%d %H:%M:%S')
-         print(date)
-         #### TypeError: '<=' not supported between instances of 'datetime.datetime' and 'str' ####
-        #  if lastmod <= check_date: 
-        #     filtered_obj = lastmod
-       
+for object in files_in_bucket:
+    lastmod = object.last_modified
+    print(lastmod)
+    print(check_date)
+
+    #### TypeError: '<=' not supported between instances of 'datetime.datetime' and 'str' ####
+    if lastmod >= check_date: 
+        filtered_obj = lastmod
+    
     ## Print filtered results
     for f in filtered_obj:    
         print(object.key, object.last_modified, object.size, object.storage_class)
