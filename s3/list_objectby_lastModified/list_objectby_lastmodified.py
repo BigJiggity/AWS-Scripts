@@ -2,7 +2,7 @@ import boto3
 import pprint
 import csv
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from dateutil import parser
 
 ## Set up pretty print for easier reading
@@ -21,27 +21,41 @@ if not os.path.exists("Data"):
 s3r=boto3.resource('s3')
 s3=boto3.client('s3')
 
+##################################
+# Option 1
+##################################
 
-# ## WORKING EXTRACT ##
-# ################################################
+# Get the current date
+current_date = datetime.now(timezone.utc).timestamp()
+print(current_date)
+
 # ## FINISHED: Gather Buckets
+
 bkts = s3.list_buckets()
 
 ## FINISHED: Output the bucket names
 for bucket in bkts['Buckets']:
      mybucket = (bucket["Name"])
 
-# Get the current date
-current_date = datetime.now().timestamp()
+
 
 # Get the list of objects in the bucket
 objects = s3.list_objects_v2(Bucket=mybucket)['Contents']
 
-# Iterate over each object and check if it hasn't been modified in the past 3 years
+## Iterate over each object and check if it hasn't been modified in the past 3 years
+
 for obj in objects:
     last_modified = obj['LastModified']
-    if parse(last_modified).timestamp() < current_date - timedelta(days=3*365):
+    print(timedelta(3*365))
+    if current_date - timedelta(days=3*365) > last_modified:
         print(obj['Key'], obj['last_modified'], obj['size'], obj['storage_class'])   
+
+##################################################################
+
+##################################
+# Option 2
+##################################
+
 # ## FINISHED: Get a bucket, and list all objects in the bucket
 # bn = s3r.Bucket(bucket["Name"])
 # files_in_bucket = list(bn.objects.all())
@@ -60,8 +74,13 @@ for obj in objects:
 #     ## Print filtered results
 #     for f in filtered_obj:    
 #         print(object.key, object.last_modified, object.size, object.storage_class)
-   ################################################
+
+################################################
    
+########################################
+# Option 3
+########################################
+
 # # Create reusable Paginator
 # s3_paginator = s3.get_paginator(bn.objects.all())
 
@@ -74,6 +93,10 @@ for obj in objects:
 # for object in filtered_iterator:
 #     print(object.key, object.last_modified, object.size, object.storage_class)
    
+
+##########################################
+# CSV Generator
+##########################################
                 
 # # Iterate through buckets, creating a csv per bucket
 #     for b in bucket["Name"]:  
