@@ -3,6 +3,7 @@ import pprint
 import csv
 import os
 from datetime import datetime, timedelta
+from dateutil import parser
 
 ## Set up pretty print for easier reading
 pp = pprint.PrettyPrinter(indent=4)
@@ -31,7 +32,7 @@ for bucket in bkts['Buckets']:
      mybucket = (bucket["Name"])
 
 # Get the current date
-current_date = datetime.now()
+current_date = datetime.now().timestamp()
 
 # Get the list of objects in the bucket
 objects = s3.list_objects_v2(Bucket=mybucket)['Contents']
@@ -39,7 +40,7 @@ objects = s3.list_objects_v2(Bucket=mybucket)['Contents']
 # Iterate over each object and check if it hasn't been modified in the past 3 years
 for obj in objects:
     last_modified = obj['LastModified']
-    if last_modified < current_date - timedelta(days=3*365):
+    if parse(last_modified).timestamp() < current_date - timedelta(days=3*365):
         print(obj['Key'], obj['last_modified'], obj['size'], obj['storage_class'])   
 # ## FINISHED: Get a bucket, and list all objects in the bucket
 # bn = s3r.Bucket(bucket["Name"])
