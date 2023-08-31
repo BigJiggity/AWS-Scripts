@@ -12,6 +12,9 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=loggi
 ## Set date for how far back you want to check
 CHECK_DATE: date = date(2020, 8, 1)
 
+# List of buckets to skip during iteration
+skip_buckets = ['analytics-emr-runtime']
+
 ## Check if Data Directory exists, if not create data folder
 if not os.path.exists("Data"):
     os.makedirs("Data")
@@ -24,30 +27,31 @@ def get_bucket_data(buckets: list) -> None:
         ## Iterate through each bucket
         for bucket in buckets:
                 logging.info("Getting data for bucket: %s", bucket.name)
-                ## Create a CSV file for each bucket
-                csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
-                csv_writer = csv.writer(csv_file)
+                if bucket.name in skip_buckets:
+                    ## Create a CSV file for each bucket
+                    csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
+                    csv_writer = csv.writer(csv_file)
 
-                ## define values for header row
-                header: list[str] = ['File_Name', 'Last_Modified_Date',
-                        'File Size', 'Storage Class', 'Owner']
-                
-                ## Write Header to csv
-                csv_writer.writerow(header)
+                    ## define values for header row
+                    header: list[str] = ['File_Name', 'Last_Modified_Date',
+                            'File Size', 'Storage Class', 'Owner']
+                    
+                    ## Write Header to csv
+                    csv_writer.writerow(header)
 
-                ## List objects inside the bucket
-                for obj in bucket.objects.all():
-                        ## Convert last_modified time to year-month-day format
-                        lstmod = obj.last_modified.date()
+                    ## List objects inside the bucket
+                    for obj in bucket.objects.all():
+                            ## Convert last_modified time to year-month-day format
+                            lstmod = obj.last_modified.date()
 
-                        ## Conditional check for object lastmodified date being 3+ years old
-                        if lstmod <= CHECK_DATE:                 
-                                ## define variables for data rows
-                                data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
-                                        obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
+                            ## Conditional check for object lastmodified date being 3+ years old
+                            if lstmod >= CHECK_DATE:                 
+                                    ## define variables for data rows
+                                    data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
+                                            obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
 
-                                ## Write Data to csv
-                                csv_writer.writerow(data)
+                                    ## Write Data to csv
+                                    csv_writer.writerow(data)
 
 if __name__ == "__main__":
         
