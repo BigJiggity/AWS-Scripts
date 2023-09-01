@@ -26,7 +26,14 @@ def get_bucket_data(buckets: list) -> None:
         """
         ## Iterate through each bucket
         for bucket in buckets:
+                logging.info("Getting creation date of buckets less than 3yrs old to omit from scan: %s", bucket.name, bucket.creation_date)
                 logging.info("Getting data for bucket: %s", bucket.name)
+                
+                ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
+                bcdate = bucket.creation_date
+                if bcdate >= CHECK_DATE:
+                    skip_buckets.append(bucket.name)
+                
                 if bucket.name not in skip_buckets:
                     ## Create a CSV file for each bucket
                     csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
@@ -45,7 +52,7 @@ def get_bucket_data(buckets: list) -> None:
                             lstmod = obj.last_modified.date()
 
                             ## Conditional check for object lastmodified date being 3+ years old
-                            if lstmod >= CHECK_DATE:                 
+                            if lstmod <= CHECK_DATE:                 
                                     ## define variables for data rows
                                     data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
                                             obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
