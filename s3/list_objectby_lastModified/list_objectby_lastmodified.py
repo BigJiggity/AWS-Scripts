@@ -26,16 +26,18 @@ def get_bucket_data(buckets: list) -> None:
         """
         ## Iterate through each bucket
         for bucket in buckets:
-                logging.info("Getting creation date of buckets less than 3yrs old to omit from scan: %s", bucket.name, bucket.creation_date)
                 logging.info("Getting data for bucket: %s", bucket.name)
                 
                 ## Convert creation_date time to year-month-day format
+                logging.info("Getting creation date for the bucket: %s", bucket.creation_date)
                 bcdate = bucket.creation_date.date()
+                print(bcdate)
                 
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
                 if bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
-                
+                    logging.info("updating skiped buckets list: %s", skip_buckets)
+                    
                 if bucket.name not in skip_buckets:
                     ## Create a CSV file for each bucket
                     csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
