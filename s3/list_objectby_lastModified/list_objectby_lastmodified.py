@@ -14,7 +14,7 @@ CHECK_DATE: date = date(2020, 8, 1)
 
 # List of buckets to skip during iteration
 skip_buckets = ['analytics-emr-runtime', 'alsv2-production', 'alteryx-prod', 'aplia-logs-prod', 'aplia-materials-prod', 'aplia-platform-prod', 'aplia-prod-sqlbackup',
-                'aplia-publishing-prod', 'aplia-rawdatadownload-prod', 'aplia-reciept-prod', 'apliacoursespub', 'apliaprod-itemregelb', 'apliaprod-plat-int', 'apliaq3prod',
+                'aplia-publishing-prod', 'aplia-rawdatadownload-prod', 'aplia-reciept-prod', 'apliacoursespub', 'apliaprod-itemregelb', 'apliaprod-plat-int', 'apliaq4prod',
                 'aritifactory-metadata-prod-devops', 'av-archive-backup', 'becaa-prod', 'bigdataDev', 'bigdataProd', 'cassandra-prod-ops', 'cassandra-unloader-analytics-prod',
                 'ccp-video-transcoding-prod', 'cengage-analytics-platform-airflow', 'cengage-analytics-platform-cdn-prod', 'cengage-analytics-platform-prod']
 
@@ -32,18 +32,22 @@ def get_bucket_data(buckets: list) -> None:
                 logging.info("Getting data for buckets...")
                 
                 ## Convert creation_date time to year-month-day format
-                logging.info("Checking creation date for the bucket: %s", bucket.creation_date)
                 bcdate = bucket.creation_date.date()
                 
+                ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
+                if bucket.name in skip_buckets:
+                    logging.info("Bucket %s has been processed, Skipping Bucket...", bucket.name)
+                
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
-                if bcdate >= CHECK_DATE:
+                elif bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
+                    logging.info("Checking creation date for the bucket: %s", bucket.creation_date)    
                     logging.info("Updating skiped buckets list: %s", skip_buckets)
-                else:
-                    logging.info("Processing Bucket: %s", bucket.name)
                     
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
-                if bucket.name not in skip_buckets:                    
+                else:
+                    bucket.name not in skip_buckets:
+                    logging.info("Processing Bucket: %s", bucket.name)                    
                     ## Create a CSV file for each bucket
                     csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
                     csv_writer = csv.writer(csv_file)
