@@ -45,8 +45,7 @@ def get_bucket_data(buckets: list) -> None:
                     logging.info("Updating skiped buckets list: %s", skip_buckets)
                     
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
-                else:
-                    bucket.name not in skip_buckets:
+                elif bucket.name not in skip_buckets:
                     logging.info("Processing Bucket: %s", bucket.name)                    
                     ## Create a CSV file for each bucket
                     csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
