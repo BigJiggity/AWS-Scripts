@@ -36,19 +36,17 @@ def get_bucket_data(buckets: list) -> None:
                 
                 ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
                 if bucket.name in skip_buckets:
-                    logging.info("Bucket %s has been processed, Skipping Bucket...", bucket.name)
-                    logging.info("    ")
+                    logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
                 
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
                 elif bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
                     logging.info("Checking creation date for bucket: %s - %s: - bucket is newer than 3yrs",bucket.name, bucket.creation_date)    
-                    logging.info("Updating skiped buckets list: %s", skip_buckets)
-                    logging.info("   ")
+                    logging.info("Updating skiped buckets list... \n")
                     
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
                 elif bucket.name not in skip_buckets:
-                    logging.info("Processing Bucket: %s", bucket.name)                    
+                    logging.info("Processing Bucket: %s \n", bucket.name)                    
                     ## Create a CSV file for each bucket
                     csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
                     csv_writer = csv.writer(csv_file)
@@ -86,4 +84,4 @@ if __name__ == "__main__":
         
         get_bucket_data(buckets)
         
-        logging.info("Script Complete!")
+        logging.info("Script Complete! \n")
