@@ -15,7 +15,7 @@ CHECK_DATE: date = date(2020, 8, 1)
 # List of buckets to skip during iteration
 skip_buckets = ['analytics-emr-runtime', 'alsv2-production', 'alteryx-prod', 'aplia-logs-prod', 'aplia-materials-prod', 'aplia-platform-prod', 'aplia-prod-sqlbackup',
                 'aplia-publishing-prod', 'aplia-rawdatadownload-prod', 'aplia-reciept-prod', 'apliacoursespub', 'apliaprod-itemregelb', 'apliaprod-plat-int', 'apliaq4prod',
-                'aritifactory-metadata-prod-devops', 'av-archive-backup', 'becaa-prod', 'bigdataDev', 'bigdataProd', 'cassandra-prod-ops', 'cassandra-unloader-analytics-prod',
+                'av-archive-backup', 'becaa-prod', 'bigdataDev', 'bigdataProd', 'cassandra-prod-ops', 'cassandra-unloader-analytics-prod',
                 'ccp-video-transcoding-prod', 'cengage-analytics-platform-airflow', 'cengage-analytics-platform-cdn-prod', 'cengage-analytics-platform-prod']
 
 ## Check if Data Directory exists, if not create data folder
@@ -41,7 +41,7 @@ def get_bucket_data(buckets: list) -> None:
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
                 elif bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
-                    logging.info("Checking creation date for the bucket: %s", bucket.creation_date)    
+                    logging.info("Checking creation date for bucket: %s - %s",bucket.name, bucket.creation_date)    
                     logging.info("Updating skiped buckets list: %s", skip_buckets)
                     
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
