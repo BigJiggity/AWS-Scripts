@@ -13,7 +13,10 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=loggi
 CHECK_DATE: date = date(2020, 8, 1)
 
 # List of buckets to skip during iteration
-skip_buckets = ['analytics-emr-runtime']
+skip_buckets = ['analytics-emr-runtime', 'alsv2-production', 'alteryx-prod', 'aplia-logs-prod', 'aplia-materials-prod', 'aplia-platform-prod', 'aplia-prod-sqlbackup',
+                'aplia-publishing-prod', 'aplia-rawdatadownload-prod', 'aplia-reciept-prod', 'apliacoursespub', 'apliaprod-itemregelb', 'apliaprod-plat-int', 'apliaq3prod',
+                'aritifactory-metadata-prod-devops', 'av-archive-backup', 'becaa-prod', 'bigdataDev', 'bigdataProd', 'cassandra-prod-ops', 'cassandra-unloader-analytics-prod',
+                'ccp-video-transcoding-prod', 'cengage-analytics-platform-airflow', 'cengage-analytics-platform-cdn-prod', 'cengage-analytics-platform-prod']
 
 ## Check if Data Directory exists, if not create data folder
 if not os.path.exists("Data"):
