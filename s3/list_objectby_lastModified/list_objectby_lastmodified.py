@@ -7,7 +7,7 @@ import os
 from datetime import date
 
 # Setup logging config
-logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
+logging.basicConfig(filename="s3_scanlog.txt", format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 
 ## Set date for how far back you want to check
 CHECK_DATE: date = date(2020, 8, 1)
@@ -37,12 +37,14 @@ def get_bucket_data(buckets: list) -> None:
                 ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
                 if bucket.name in skip_buckets:
                     logging.info("Bucket %s has been processed, Skipping Bucket...", bucket.name)
+                    logging.info("    ")
                 
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
                 elif bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
-                    logging.info("Checking creation date for bucket: %s - %s",bucket.name, bucket.creation_date)    
+                    logging.info("Checking creation date for bucket: %s - %s: - bucket is newer than 3yrs",bucket.name, bucket.creation_date)    
                     logging.info("Updating skiped buckets list: %s", skip_buckets)
+                    logging.info("   ")
                     
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
                 elif bucket.name not in skip_buckets:
