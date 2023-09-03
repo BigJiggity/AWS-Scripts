@@ -5,9 +5,15 @@ import logging
 import csv
 import os
 from datetime import date
-
+import sys
 # Setup logging config
-logging.basicConfig(filename="s3_scanlog.txt", format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
+logging.basicConfig( 
+    format='%(asctime)s %(levelname)s: %(message)s', 
+    level=logging.INFO, handlers=[
+        logging.FileHandler("s3_scan_log.txt"),
+        logging.StreamHandler(sys.stdout)
+        ]
+    )
 
 ## Set date for how far back you want to check
 CHECK_DATE: date = date(2020, 8, 1)
@@ -29,7 +35,7 @@ def get_bucket_data(buckets: list) -> None:
         """
         ## Iterate through each bucket
         for bucket in buckets:
-                logging.info("Getting data for buckets...")
+                logging.info("Getting data for bucket: %s", bucket.name)
                 
                 ## Convert creation_date time to year-month-day format
                 bcdate = bucket.creation_date.date()
@@ -41,8 +47,7 @@ def get_bucket_data(buckets: list) -> None:
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
                 elif bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
-                    logging.info("Checking creation date for bucket: %s - %s: - bucket is newer than 3yrs",bucket.name, bucket.creation_date)    
-                    logging.info("Updating skiped buckets list... \n")
+                    logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)    
                     
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
                 elif bucket.name not in skip_buckets:
@@ -78,7 +83,7 @@ if __name__ == "__main__":
         ## Create resource
                 s3 = boto3.resource('s3')
         except Exception as e:
-                logging.error("Error creating S3 resource. Error: %s", e)
+                logging.error("Error creating S3 resource. Error: %s \n", e)
                 
         buckets = s3.buckets.all()
         
