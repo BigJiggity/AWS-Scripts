@@ -29,19 +29,21 @@ def get_bucket_data(buckets: list) -> None:
         """
         ## Iterate through each bucket
         for bucket in buckets:
-                logging.info("Getting data for bucket: %s", bucket.name)
+                logging.info("Getting data for buckets...")
                 
                 ## Convert creation_date time to year-month-day format
-                logging.info("Getting creation date for the bucket: %s", bucket.creation_date)
+                logging.info("Checking creation date for the bucket: %s", bucket.creation_date)
                 bcdate = bucket.creation_date.date()
-                print(bcdate)
                 
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
                 if bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
-                    logging.info("updating skiped buckets list: %s", skip_buckets)
+                    logging.info("Updating skiped buckets list: %s", skip_buckets)
+                else:
+                    logging.info("Processing Bucket: %s", bucket.name)
                     
-                if bucket.name not in skip_buckets:
+                ## Check if bucket is not in the skip_bucket list, process object data in bucket
+                if bucket.name not in skip_buckets:                    
                     ## Create a CSV file for each bucket
                     csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
                     csv_writer = csv.writer(csv_file)
