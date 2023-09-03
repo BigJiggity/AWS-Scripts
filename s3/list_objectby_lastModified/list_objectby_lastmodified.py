@@ -6,6 +6,7 @@ import csv
 import os
 from datetime import date
 import sys
+
 # Setup logging config
 logging.basicConfig( 
     format='%(asctime)s %(levelname)s: %(message)s', 
