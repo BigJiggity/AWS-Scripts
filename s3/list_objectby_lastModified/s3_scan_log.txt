@@ -7,3 +7,13 @@
 
 2023-09-03 04:10:08,577 INFO: Script Complete! 
 
+2023-09-04 03:21:35,857 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-09-04 03:22:37,036 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-09-04 03:22:37,636 INFO: Getting data for bucket: l640-test-bucket
+2023-09-04 03:22:37,637 INFO: Bucket l640-test-bucket has been processed, Skipping Bucket... 
+
+2023-09-04 03:22:37,637 INFO: Getting data for bucket: testicle-bucket-2
+2023-09-04 03:22:37,637 INFO: Bucket testicle-bucket-2 has been processed, Skipping Bucket... 
+
+2023-09-04 03:22:37,637 INFO: Script Complete! 
+

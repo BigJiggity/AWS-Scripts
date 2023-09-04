@@ -7,7 +7,7 @@ import os
 from datetime import date
 import sys
 
-# Setup logging config
+## Setup logging config
 logging.basicConfig( 
     format='%(asctime)s %(levelname)s: %(message)s', 
     level=logging.INFO, handlers=[
@@ -19,15 +19,21 @@ logging.basicConfig(
 ## Set date for how far back you want to check
 CHECK_DATE: date = date(2020, 8, 1)
 
-# List of buckets to skip during iteration
-skip_buckets = ['analytics-emr-runtime', 'alsv2-production', 'alteryx-prod', 'aplia-logs-prod', 'aplia-materials-prod', 'aplia-platform-prod', 'aplia-prod-sqlbackup',
-                'aplia-publishing-prod', 'aplia-rawdatadownload-prod', 'aplia-reciept-prod', 'apliacoursespub', 'apliaprod-itemregelb', 'apliaprod-plat-int', 'apliaq4prod',
-                'av-archive-backup', 'becaa-prod', 'bigdataDev', 'bigdataProd', 'cassandra-prod-ops', 'cassandra-unloader-analytics-prod',
-                'ccp-video-transcoding-prod', 'cengage-analytics-platform-airflow', 'cengage-analytics-platform-cdn-prod', 'cengage-analytics-platform-prod']
+## List of buckets to skip during iteration
+skip_buckets = []
 
 ## Check if Data Directory exists, if not create data folder
 if not os.path.exists("Data"):
     os.makedirs("Data")
+
+## Folder for file check
+folder_path = "Data/"
+
+## Add previously processed buckets to the skip_bucket list
+for file_name in os.listdir(folder_path):
+    if file_name.endswith(".csv"):
+        skip_buckets.append(os.path.splitext(file_name)[0])
+print (skip_buckets)
 
 def get_bucket_data(buckets: list) -> None:
         """ 
