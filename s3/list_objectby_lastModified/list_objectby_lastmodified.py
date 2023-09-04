@@ -33,7 +33,7 @@ folder_path = "Data/"
 for file_name in os.listdir(folder_path):
     if file_name.endswith(".csv"):
         skip_buckets.append(os.path.splitext(file_name)[0])
-print (skip_buckets)
+logging.info("front loading previously generated csv files into skip buckets list...")
 
 def get_bucket_data(buckets: list) -> None:
         """ 
