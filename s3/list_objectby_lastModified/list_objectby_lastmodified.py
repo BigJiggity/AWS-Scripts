@@ -20,7 +20,7 @@ logging.basicConfig(
 CHECK_DATE: date = date(2020, 8, 1)
 
 ## List of buckets to skip during iteration
-skip_buckets = []
+skip_buckets = ["analytics-emr-runtime",]
 
 ## Check if Data Directory exists, if not create data folder
 if not os.path.exists("Data"):
