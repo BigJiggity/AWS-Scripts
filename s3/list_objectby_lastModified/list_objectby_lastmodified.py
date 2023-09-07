@@ -25,6 +25,7 @@ if not os.path.exists("Data"):
 
 ## Folder for file check
 folder_path = "Data/"
+
 ## List of buckets to skip during iteration
 skip_buckets = ["analytics-emr-runtime",]
    
@@ -39,15 +40,13 @@ def get_bucket_data(buckets: list) -> None:
         Method to get data from each bucket and store in a CSV file
         Args: buckets (list): List of buckets to get data from
         """
+        
         ## Iterate/Process through each bucket
         for bucket in buckets:
                 logging.info("Getting data for bucket: %s", bucket.name)
                 
                 ## Convert creation_date time to year-month-day format
                 bcdate = bucket.creation_date.date()
-                
-                ## Get Object count
-                objects_count = sum(1 for _ in bucket.objects.all())
                 
                 ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
                 if bucket.name in skip_buckets:
@@ -57,9 +56,13 @@ def get_bucket_data(buckets: list) -> None:
                 elif bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
                     logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)    
-                    
+                
+                else:
+                    ## Get Object count
+                    objects_count = sum(1 for _ in bucket.objects.all())    
+                
                 ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
-                elif objects_count <= 0:
+                if objects_count <= 0:
                     skip_buckets.append(bucket.name)
                     logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
                 
