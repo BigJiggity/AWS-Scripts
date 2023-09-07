@@ -69,7 +69,7 @@ def get_bucket_data(buckets: list) -> None:
                     ##Check if any objects exist in bucket, if they do, log info and move to next bucket
                     objects = bucket.objects.all() 
                     if len(list(objects)) == 0:
-                        logging.info("No objects in %s: " %bucket.name, "skipping bucket...")
+                        logging.info("No objects in %s, skipping bucket...", bucket.name)
                     
                     else:
                         
