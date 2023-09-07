@@ -64,7 +64,8 @@ def get_bucket_data(buckets: list) -> None:
                     objects = bucket.objects.all() 
                     if len(list(objects)) == 0:
                         logging.info("No objects in %s, skipping bucket...", bucket.name)
-
+                    
+                    else:
                         ## Start Processing Objects
                         for obj in bucket.objects.all():
                                     
