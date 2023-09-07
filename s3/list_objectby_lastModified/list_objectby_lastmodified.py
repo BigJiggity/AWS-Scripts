@@ -33,7 +33,7 @@ folder_path = "Data/"
 for file_name in os.listdir(folder_path):
     if file_name.endswith(".csv"):
         skip_buckets.append(os.path.splitext(file_name)[0])
-logging.info("front loading previously generated csv files into skip buckets list...")
+logging.info("front loading previously generated csv files into skip buckets")
 
 def get_bucket_data(buckets: list) -> None:
         """ 
@@ -59,6 +59,7 @@ def get_bucket_data(buckets: list) -> None:
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
                 elif bucket.name not in skip_buckets:
                     logging.info("Processing Bucket: %s \n", bucket.name)                    
+                   
                     ## Create a CSV file for each bucket
                     csv_file = open('Data/%s.csv' %bucket.name, 'w', newline='')
                     csv_writer = csv.writer(csv_file)
@@ -83,6 +84,27 @@ def get_bucket_data(buckets: list) -> None:
 
                                     ## Write Data to csv
                                     csv_writer.writerow(data)
+                                    
+                                    ## Check if the CSV file has reached the row limit
+                                    if csv_file.tell() >= 10000:
+                                        
+                                        ## Close the current CSV file
+                                        csv_file.close()
+                                        logging.info("%s has reached 10000 rows, closing file... \n" %csv_file)
+                                        
+                                        ## Increment the file name number
+                                        file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
+                                        
+                                        ## Create a new CSV file with the incremented number
+                                        csv_file = f"{bucket.name}_{file_number}.csv"
+                                        logging.info("Creating new csv to continue scan: %s \n" %csv_file)
+                                        
+                                        ## Open the new CSV file in write mode
+                                        csv_file = open(csv_file, 'w', newline='')
+                                        writer = csv.writer(csv_file)
+                                        
+                                        ## Write the header row for the new CSV file
+                                        writer.writerow(header)
 
 if __name__ == "__main__":
         
