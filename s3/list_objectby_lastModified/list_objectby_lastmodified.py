@@ -64,7 +64,14 @@ def get_bucket_data(buckets: list) -> None:
                     header: list[str] = ['File_Name', 'Last_Modified_Date',
                             'File Size', 'Storage Class', 'Owner']
                     
+                    ## Start Processing Objects
                     for obj in bucket.objects.all():
+                        
+                        ##Check if any objects exist in bucket, if they do, log info and move to next bucket
+                        if len(list(obj)) == 0:
+                            logging.info("No objects in %s: " %bucket.name, "skipping bucket...")
+                        
+                        else:
                                 ## Convert last_modified time to year-month-day format
                                 lstmod = obj.last_modified.date()                                    
 
