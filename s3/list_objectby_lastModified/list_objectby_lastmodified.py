@@ -41,7 +41,7 @@ def get_bucket_data(buckets: list) -> None:
            if os.path.exists(f'Data/{bucket.name}'):
                 skip_buckets.append(bucket)
            else:
-               os.makedir(f'Data/{bucket.name}')
+               os.makedirs(f'Data/{bucket.name}')
                 
         logging.info("front loading previously processed buckets into the skip_buckets list... \n")
                
