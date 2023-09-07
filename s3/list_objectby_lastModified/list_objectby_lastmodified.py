@@ -36,20 +36,20 @@ def get_bucket_data(buckets: list) -> None:
         
         ## Iterate/Process through each bucket
         for bucket in buckets:
-           
-           ## check for bucket directory, if it exists add it to skip_buckets
-           if os.path.exists(f'Data/{bucket.name}'):
-                skip_buckets.append(bucket)
+    
+            # Get the object data in the bucket
+            objects = bucket.objects.all() 
+            
+            ## Convert creation_date time to year-month-day format
+            bcdate = bucket.creation_date.date()
+            
+            logging.info("Getting data for bucket: %s \n", bucket.name)
         
-        logging.info("front loading previously processed buckets into the skip_buckets list... \n")
-               
-        # Get the object data in the bucket
-        objects = bucket.objects.all() 
-        
-        ## Convert creation_date time to year-month-day format
-        bcdate = bucket.creation_date.date()
-        
-        logging.info("Getting data for bucket: %s \n", bucket.name)
+        ## check for bucket directory, if it exists add it to skip_buckets
+        if os.path.exists(f'Data/{bucket.name}'):
+            skip_buckets.append(bucket.name)
+            logging.info("front loading previously processed buckets into the skip_buckets list... \n")
+            
         ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
         if bucket.name in skip_buckets:
             logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
@@ -68,7 +68,7 @@ def get_bucket_data(buckets: list) -> None:
         elif bucket.name not in skip_buckets:
             logging.info("Processing Bucket: %s \n", bucket.name)
             
-            ## Create directory for CSV's 
+            ## Create directories for CSV's
             os.makedirs(f'Data/{bucket.name}')
             
             ## Create a CSV file for each bucket
