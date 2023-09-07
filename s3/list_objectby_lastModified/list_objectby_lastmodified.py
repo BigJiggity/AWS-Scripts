@@ -86,8 +86,7 @@ def get_bucket_data(buckets: list) -> None:
                                             
                                             ## Write Data to csv
                                             csv_writer.writerow(data)
-                    
-                                            logging.info("Checking row count of csv file, must be at or below 10000...")
+                                            
                                             ## Check if the CSV file has reached the row limit
                                             if file.tell() >= 10000:
                                                 
