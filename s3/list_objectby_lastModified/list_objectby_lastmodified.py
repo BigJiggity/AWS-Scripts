@@ -58,17 +58,17 @@ def get_bucket_data(buckets: list) -> None:
                     logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)    
                 
                 else:
-                    ## Get Object count
-                    objects_count = sum(1 for _ in bucket.objects.all())    
+                    # Get the objects in the bucket
+                    objects = bucket.objects.all()    
                 
                 ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
-                if objects_count <= 0:
+                if len(list(objects)) ==0:
                     skip_buckets.append(bucket.name)
                     logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
                 
-                # ## Check if bucket is not in the skip_bucket list, process object data in bucket
-                # elif bucket.name not in skip_buckets:
-                #     logging.info("Processing Bucket: %s \n", bucket.name)                    
+                ## Check if bucket is not in the skip_bucket list, process object data in bucket
+                elif bucket.name not in skip_buckets:
+                    logging.info("Processing Bucket: %s \n", bucket.name)                    
                             
                 #     ## Iterate/Process through Objects
                 #     for obj in bucket.objects.all():
