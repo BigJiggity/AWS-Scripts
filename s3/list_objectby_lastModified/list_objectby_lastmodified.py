@@ -69,25 +69,25 @@ def get_bucket_data(buckets: list) -> None:
             elif bucket.name not in skip_buckets:
                 logging.info("Processing Bucket: %s \n", bucket.name)
                 
-                ## Create directories for CSV's
-                bucket_dir = os.path.join(data_dir, bucket.name)
-                if not os.path.exists(bucket_dir):
-                    os.makedirs(bucket_dir)
-                logging.info("created: %s... ", bucket_dir)
+            ## Create directories for CSV's
+            bucket_dir = os.path.join(data_dir, bucket.name)
+            if not os.path.exists(bucket_dir):
+                os.makedirs(bucket_dir)
+            logging.info("created: %s... ", bucket_dir)
+            
+            ## Create a CSV file for each bucket
+            csv_file = os.path.join(bucket_dir, f'{bucket.name}.csv')
                 
-                ## Create a CSV file for each bucket
-                csv_file = os.path.join(bucket_dir, f'{bucket.name}.csv')
-                    
-                ## Open CSV in write mode
-                with open (csv_file, 'w', newline='') as file:
-                    csv_writer = csv.writer(file)
-                    
-                    ## define values for header row
-                    header: list[str] = ['File_Name', 'Last_Modified_Date',
-                        'File Size', 'Storage Class', 'Owner']  
-                    
-                    ## Write Header to csv
-                    csv_writer.writerow(header)                 
+            ## Open CSV in write mode
+            with open (csv_file, 'w', newline='') as file:
+                csv_writer = csv.writer(file)
+                
+                ## define values for header row
+                header: list[str] = ['File_Name', 'Last_Modified_Date',
+                    'File Size', 'Storage Class', 'Owner']  
+                
+                ## Write Header to csv
+                csv_writer.writerow(header)                 
                     
                 ## Set base counts for objects/csv's
                 object_count = 0
