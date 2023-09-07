@@ -45,45 +45,45 @@ def get_bucket_data(buckets: list) -> None:
             
             logging.info("Getting data for bucket: %s \n", bucket.name)
         
-        ## check for bucket directory, if it exists add it to skip_buckets
-        if os.path.exists(f'Data/{bucket.name}'):
-            skip_buckets.append(bucket.name)
-            logging.info("front loading previously processed buckets into the skip_buckets list... \n")
-            
-        ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
-        if bucket.name in skip_buckets:
-            logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
-        
-        ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
-        elif bcdate >= CHECK_DATE:
-            skip_buckets.append(bucket.name)
-            logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)     
-        
-        ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
-        elif len(list(objects)) == 0:
-            skip_buckets.append(bucket.name)
-            logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
-        
-        ## Check if bucket is not in the skip_bucket list, process object data in bucket
-        elif bucket.name not in skip_buckets:
-            logging.info("Processing Bucket: %s \n", bucket.name)
-            
-            ## Create directories for CSV's
-            os.makedirs(f'Data/{bucket.name}')
-            
-            ## Create a CSV file for each bucket
-            csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
+            ## check for bucket directory, if it exists add it to skip_buckets
+            if os.path.exists(f'Data/{bucket.name}'):
+                skip_buckets.append(bucket.name)
+                logging.info("front loading previously processed buckets into the skip_buckets list... \n")
                 
-            ## Open CSV in write mode
-            with open('Data/%s/%s' %bucket.name %csv_file, 'w', newline='') as file:
-                csv_writer = csv.writer(file)
+            ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
+            if bucket.name in skip_buckets:
+                logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
+            
+            ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
+            elif bcdate >= CHECK_DATE:
+                skip_buckets.append(bucket.name)
+                logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)     
+            
+            ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
+            elif len(list(objects)) == 0:
+                skip_buckets.append(bucket.name)
+                logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
+            
+            ## Check if bucket is not in the skip_bucket list, process object data in bucket
+            elif bucket.name not in skip_buckets:
+                logging.info("Processing Bucket: %s \n", bucket.name)
                 
-                ## define values for header row
-                header: list[str] = ['File_Name', 'Last_Modified_Date',
-                    'File Size', 'Storage Class', 'Owner']  
+                ## Create directories for CSV's
+                os.makedirs(f'Data/{bucket.name}')
                 
-                ## Write Header to csv
-                csv_writer.writerow(header)                 
+                ## Create a CSV file for each bucket
+                csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
+                    
+                ## Open CSV in write mode
+                with open('Data/%s/%s' %bucket.name %csv_file, 'w', newline='') as file:
+                    csv_writer = csv.writer(file)
+                    
+                    ## define values for header row
+                    header: list[str] = ['File_Name', 'Last_Modified_Date',
+                        'File Size', 'Storage Class', 'Owner']  
+                    
+                    ## Write Header to csv
+                    csv_writer.writerow(header)                 
                     
                 ## Set base counts for objects/csv's
                 object_count = 0
