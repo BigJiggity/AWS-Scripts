@@ -40,9 +40,7 @@ def get_bucket_data(buckets: list) -> None:
            ## check for bucket directory, if it exists add it to skip_buckets
            if os.path.exists(f'Data/{bucket.name}'):
                 skip_buckets.append(bucket)
-           else:
-               os.makedirs(f'Data/{bucket.name}')
-                
+        
         logging.info("front loading previously processed buckets into the skip_buckets list... \n")
                
         # Get the object data in the bucket
@@ -69,6 +67,9 @@ def get_bucket_data(buckets: list) -> None:
         ## Check if bucket is not in the skip_bucket list, process object data in bucket
         elif bucket.name not in skip_buckets:
             logging.info("Processing Bucket: %s \n", bucket.name)
+            
+            ## Create directory for CSV's 
+            os.makedirs(f'Data/{bucket.name}')
             
             ## Create a CSV file for each bucket
             csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
