@@ -120,10 +120,11 @@ def get_bucket_data(buckets: list) -> None:
                             csv_file_name = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
                             with open (csv_file_name, 'w', newline='') as new_file:
                                 csv_writer = csv.writer(new_file)
-                            
+                                logging.info("Created next csv file: %s \n", csv_file_name)
+                               
                                 ## Write Header row
                                 csv_writer.writerow(header)
-                            logging.info("Created next csv file: %s", csv_file_name)    
+                                
                             ## Reset the object count and increment the csv count
                             object_count = 0
                             csv_count += 1
