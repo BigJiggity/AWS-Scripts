@@ -71,9 +71,6 @@ def get_bucket_data(buckets: list) -> None:
                     header: list[str] = ['File_Name', 'Last_Modified_Date',
                             'File Size', 'Storage Class', 'Owner']
                     
-                    ## Write Header to csv
-                    csv_writer.writerow(header)
-
                      ## Check if the CSV file has reached the row limit
                     if file.tell() >= 10000:
                         
@@ -99,7 +96,9 @@ def get_bucket_data(buckets: list) -> None:
                     else:
                         for obj in bucket.objects.all():
                                 ## Convert last_modified time to year-month-day format
-                                lstmod = obj.last_modified.date()
+                                lstmod = obj.last_modified.date()    
+                                ## Write Header to csv
+                                csv_writer.writerow(header)
 
                                 ## Conditional check for object lastmodified date being 3+ years old
                                 if lstmod <= CHECK_DATE:                 
