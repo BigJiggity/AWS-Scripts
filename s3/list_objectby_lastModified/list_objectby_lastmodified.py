@@ -123,13 +123,13 @@ def get_bucket_data(buckets: list) -> None:
                             
                                 ## Write Header row
                                 csv_writer.writerow(header)
-                            logging.info("Created next csv file: %s", new_file)    
+                            logging.info("Created next csv file: %s", csv_file_name)    
                             ## Reset the object count and increment the csv count
                             object_count = 0
                             csv_count += 1
                         
-            ## Close the CSV file for the current bucket
-            csv_file.close()
+        ## Close the CSV file for the current bucket
+        csv_file.close()
                                 
 
                             
