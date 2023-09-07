@@ -86,37 +86,37 @@ def get_bucket_data(buckets: list) -> None:
                                     header: list[str] = ['File_Name', 'Last_Modified_Date',
                                             'File Size', 'Storage Class', 'Owner']
                                     
-                                    ## Create a CSV file for each bucket
-                                    csv_file = f"{bucket.name}.csv"
-                                        
-                                    ## Open CSV in write mode
-                                    with open('Data/%s' %csv_file, 'w', newline='') as file:
-                                        csv_writer = csv.writer(file)
-                                        ## Write Header to csv
-                                        csv_writer.writerow(header)
-                                        ## Write Data to csv
-                                        csv_writer.writerow(data)
-                                        
-                                        ## Check if the CSV file has reached the row limit
-                                        if file.tell() >= 10000:
-                                            
-                                            ## Close the current CSV file
-                                            file.close()
-                                            logging.info("%s has reached 10000 rows, closing file... \n" %file)
-                                            
-                                            ## Increment the file name number
-                                            file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
-                                            
-                                            ## Create a new CSV file with the incremented number
-                                            new_csv_file = f"{bucket.name}_{file_number}.csv"
-                                            logging.info("Creating new csv to continue scan: %s \n" %new_csv_file)
-                                            
-                                            ## Open the new CSV file in write mode
-                                            file = open(new_csv_file, 'w', newline='')
-                                            writer = csv.writer(file)
-                                            
-                                            ## Write the header row for the new CSV file
-                                            writer.writerow(header)                   
+                            ## Create a CSV file for each bucket
+                            csv_file = f"{bucket.name}.csv"
+                                
+                            ## Open CSV in write mode
+                            with open('Data/%s' %csv_file, 'w', newline='') as file:
+                                csv_writer = csv.writer(file)
+                                ## Write Header to csv
+                                csv_writer.writerow(header)
+                                ## Write Data to csv
+                                csv_writer.writerow(data)
+                                
+                                ## Check if the CSV file has reached the row limit
+                                if file.tell() >= 10000:
+                                    
+                                    ## Close the current CSV file
+                                    file.close()
+                                    logging.info("%s has reached 10000 rows, closing file... \n" %file)
+                                    
+                                    ## Increment the file name number
+                                    file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
+                                    
+                                    ## Create a new CSV file with the incremented number
+                                    new_csv_file = f"{bucket.name}_{file_number}.csv"
+                                    logging.info("Creating new csv to continue scan: %s \n" %new_csv_file)
+                                    
+                                    ## Open the new CSV file in write mode
+                                    file = open(new_csv_file, 'w', newline='')
+                                    writer = csv.writer(file)
+                                    
+                                    ## Write the header row for the new CSV file
+                                    writer.writerow(header)                   
                                                         
 if __name__ == "__main__":
         
