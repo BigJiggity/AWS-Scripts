@@ -73,6 +73,7 @@ def get_bucket_data(buckets: list) -> None:
                 bucket_dir = os.path.join(data_dir, bucket.name)
                 if not os.path.exists(bucket_dir):
                     os.makedirs(bucket_dir)
+                logging.info("created: %s... ", bucket_dir)
                 
                 ## Create a CSV file for each bucket
                 csv_file = os.path.join(bucket_dir, f'{bucket.name}.csv')
@@ -105,9 +106,13 @@ def get_bucket_data(buckets: list) -> None:
                         data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
                                 obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
                         
+                    ## Open CSV for writing
+                        with open (csv_file, 'w', newline='') as file:
+                         csv_writer = csv.writer(file)
+                        
                         ## Write Data to csv
                         csv_writer.writerow(data)
-                        
+                    
                         ## Increment the object counter
                         object_count += 1
                         
