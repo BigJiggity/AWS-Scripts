@@ -108,7 +108,7 @@ def get_bucket_data(buckets: list) -> None:
                                 
                                 ## Check object count, if count reaches 10000, create a new CSV file
                                 if object_count == 10000:
-                                    csv_file.close()
+                                    file.close()
                                     
                                     ## Create new CSV file with incremented name
                                     csv_file_name = f"{bucket.name}_{csv_count}.csv"
@@ -122,8 +122,8 @@ def get_bucket_data(buckets: list) -> None:
                                     object_count = 0
                                     csv_count += 1
                                 
-                                    ## Close the CSV file for the current bucket
-                                    csv_file.close()
+                        ## Close the CSV file for the current bucket
+                        csv_file.close()
                                 
 
                             
