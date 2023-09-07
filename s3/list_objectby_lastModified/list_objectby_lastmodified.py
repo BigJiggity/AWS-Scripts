@@ -20,8 +20,9 @@ logging.basicConfig(
 CHECK_DATE: date = date(2020, 8, 1)
 
 ## Check if Data Directory exists, if not create data folder
-if not os.path.exists("Data"):
-    os.makedirs("Data")
+data_dir = 'Data'
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
     
 ## List of buckets to skip during iteration
 skip_buckets = ["analytics-emr-runtime",]
@@ -69,13 +70,15 @@ def get_bucket_data(buckets: list) -> None:
                 logging.info("Processing Bucket: %s \n", bucket.name)
                 
                 ## Create directories for CSV's
-                os.makedirs(f'Data/{bucket.name}')
+                bucket_dir = os.path.join(data_dir, bucket)
+                if not os.path.exists(bucket_dir):
+                    os.makedirs(data_dir)
                 
                 ## Create a CSV file for each bucket
-                csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
+                csv_file = os.path.join(bucket_dir, f'{bucket.name}.csv')
                     
                 ## Open CSV in write mode
-                with open('Data/%s/%s' %bucket.name, csv_file, 'w', newline='') as file:
+                with open (csv_file, 'w', newline='') as file:
                     csv_writer = csv.writer(file)
                     
                     ## define values for header row
@@ -113,13 +116,13 @@ def get_bucket_data(buckets: list) -> None:
                             file.close()
                             
                             ## Create new CSV file with incremented name
-                            csv_file_name = f'Data/{bucket.name}/{bucket.name}_{csv_count}.csv'
-                            csv_file = open(csv_file_name, 'w', newline='')
-                            csv_writer = csv.writer('Data/%s', csv_file)
+                            csv_file_name = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
+                            with open (csv_file_name, 'w', newline='') as new_file:
+                                csv_writer = csv.writer(new_file)
                             
-                            ## Write Header row
-                            csv_writer.writerow(header)
-                            
+                                ## Write Header row
+                                csv_writer.writerow(header)
+                                
                             ## Reset the object count and increment the csv count
                             object_count = 0
                             csv_count += 1
