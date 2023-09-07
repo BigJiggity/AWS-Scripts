@@ -19,17 +19,16 @@ logging.basicConfig(
 ## Set date for how far back you want to check
 CHECK_DATE: date = date(2020, 8, 1)
 
-## List of buckets to skip during iteration
-skip_buckets = ["analytics-emr-runtime",]
-
 ## Check if Data Directory exists, if not create data folder
 if not os.path.exists("Data"):
     os.makedirs("Data")
 
 ## Folder for file check
 folder_path = "Data/"
-
-## Add previously processed buckets to the skip_bucket list
+## List of buckets to skip during iteration
+skip_buckets = ["analytics-emr-runtime",]
+   
+    ## Add previously processed buckets to the skip_bucket list
 for file_name in os.listdir(folder_path):
     if file_name.endswith(".csv"):
         skip_buckets.append(os.path.splitext(file_name)[0])
@@ -67,55 +66,55 @@ def get_bucket_data(buckets: list) -> None:
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
                 elif bucket.name not in skip_buckets:
                     logging.info("Processing Bucket: %s \n", bucket.name)                    
-                          
-                ## Iterate/Process through Objects
-                for obj in bucket.objects.all():
                             
-                        ## Convert last_modified time to year-month-day format
-                        lstmod = obj.last_modified.date()                                    
-
-                        ## Conditional check for object lastmodified date being 3+ years old
-                        if lstmod <= CHECK_DATE:                 
+                    ## Iterate/Process through Objects
+                    for obj in bucket.objects.all():
                                 
-                                ## define variables for data rows
-                                data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
-                                        obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
+                            ## Convert last_modified time to year-month-day format
+                            lstmod = obj.last_modified.date()                                    
 
-                                ## define values for header row
-                                header: list[str] = ['File_Name', 'Last_Modified_Date',
-                                        'File Size', 'Storage Class', 'Owner']
-                                
-                                ## Create a CSV file for each bucket
-                                csv_file = f"{bucket.name}.csv"
+                            ## Conditional check for object lastmodified date being 3+ years old
+                            if lstmod <= CHECK_DATE:                 
                                     
-                                ## Open CSV in write mode
-                                with open('Data/%s' %csv_file, 'w', newline='') as file:
-                                    csv_writer = csv.writer(file)
-                                    ## Write Header to csv
-                                    csv_writer.writerow(header)
-                                    ## Write Data to csv
-                                    csv_writer.writerow(data)
+                                    ## define variables for data rows
+                                    data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
+                                            obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
+
+                                    ## define values for header row
+                                    header: list[str] = ['File_Name', 'Last_Modified_Date',
+                                            'File Size', 'Storage Class', 'Owner']
                                     
-                                    ## Check if the CSV file has reached the row limit
-                                    if file.tell() >= 10000:
+                                    ## Create a CSV file for each bucket
+                                    csv_file = f"{bucket.name}.csv"
                                         
-                                        ## Close the current CSV file
-                                        file.close()
-                                        logging.info("%s has reached 10000 rows, closing file... \n" %file)
+                                    ## Open CSV in write mode
+                                    with open('Data/%s' %csv_file, 'w', newline='') as file:
+                                        csv_writer = csv.writer(file)
+                                        ## Write Header to csv
+                                        csv_writer.writerow(header)
+                                        ## Write Data to csv
+                                        csv_writer.writerow(data)
                                         
-                                        ## Increment the file name number
-                                        file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
-                                        
-                                        ## Create a new CSV file with the incremented number
-                                        new_csv_file = f"{bucket.name}_{file_number}.csv"
-                                        logging.info("Creating new csv to continue scan: %s \n" %new_csv_file)
-                                        
-                                        ## Open the new CSV file in write mode
-                                        file = open(new_csv_file, 'w', newline='')
-                                        writer = csv.writer(file)
-                                        
-                                        ## Write the header row for the new CSV file
-                                        writer.writerow(header)                   
+                                        ## Check if the CSV file has reached the row limit
+                                        if file.tell() >= 10000:
+                                            
+                                            ## Close the current CSV file
+                                            file.close()
+                                            logging.info("%s has reached 10000 rows, closing file... \n" %file)
+                                            
+                                            ## Increment the file name number
+                                            file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
+                                            
+                                            ## Create a new CSV file with the incremented number
+                                            new_csv_file = f"{bucket.name}_{file_number}.csv"
+                                            logging.info("Creating new csv to continue scan: %s \n" %new_csv_file)
+                                            
+                                            ## Open the new CSV file in write mode
+                                            file = open(new_csv_file, 'w', newline='')
+                                            writer = csv.writer(file)
+                                            
+                                            ## Write the header row for the new CSV file
+                                            writer.writerow(header)                   
                                                         
 if __name__ == "__main__":
         
