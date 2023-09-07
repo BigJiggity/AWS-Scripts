@@ -38,92 +38,93 @@ def get_bucket_data(buckets: list) -> None:
         for bucket in buckets:
            
            ## check for bucket directory, if it exists add it to skip_buckets
-            try:
-                os.mkdir("Data/%s", bucket)
-            except FileExistsError:
+           if os.path.exists(f'Data/{bucket.name}'):
                 skip_buckets.append(bucket)
-                logging.info("front loading previously processed buckets into the skip_buckets list... \n")
+           else:
+               os.makedir(f'Data/{bucket.name}')
                 
-                # Get the object data in the bucket
-                objects = bucket.objects.all() 
+        logging.info("front loading previously processed buckets into the skip_buckets list... \n")
+               
+        # Get the object data in the bucket
+        objects = bucket.objects.all() 
+        
+        ## Convert creation_date time to year-month-day format
+        bcdate = bucket.creation_date.date()
+        
+        logging.info("Getting data for bucket: %s \n", bucket.name)
+        ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
+        if bucket.name in skip_buckets:
+            logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
+        
+        ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
+        elif bcdate >= CHECK_DATE:
+            skip_buckets.append(bucket.name)
+            logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)     
+        
+        ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
+        elif len(list(objects)) == 0:
+            skip_buckets.append(bucket.name)
+            logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
+        
+        ## Check if bucket is not in the skip_bucket list, process object data in bucket
+        elif bucket.name not in skip_buckets:
+            logging.info("Processing Bucket: %s \n", bucket.name)
+            
+            ## Create a CSV file for each bucket
+            csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
                 
-                ## Convert creation_date time to year-month-day format
-                bcdate = bucket.creation_date.date()
+            ## Open CSV in write mode
+            with open('Data/%s/%s' %bucket.name %csv_file, 'w', newline='') as file:
+                csv_writer = csv.writer(file)
                 
-                logging.info("Getting data for bucket: %s \n", bucket.name)
-                ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
-                if bucket.name in skip_buckets:
-                    logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
+                ## define values for header row
+                header: list[str] = ['File_Name', 'Last_Modified_Date',
+                    'File Size', 'Storage Class', 'Owner']  
                 
-                ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
-                elif bcdate >= CHECK_DATE:
-                    skip_buckets.append(bucket.name)
-                    logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)     
-                
-                ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
-                elif len(list(objects)) == 0:
-                    skip_buckets.append(bucket.name)
-                    logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
-                
-                ## Check if bucket is not in the skip_bucket list, process object data in bucket
-                elif bucket.name not in skip_buckets:
-                    logging.info("Processing Bucket: %s \n", bucket.name)
+                ## Write Header to csv
+                csv_writer.writerow(header)                 
                     
-                    ## Create a CSV file for each bucket
-                    csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
-                        
-                    ## Open CSV in write mode
-                    with open('Data/%s/%s' %bucket.name %csv_file, 'w', newline='') as file:
-                        csv_writer = csv.writer(file)
-                        
-                        ## define values for header row
-                        header: list[str] = ['File_Name', 'Last_Modified_Date',
-                            'File Size', 'Storage Class', 'Owner']  
-                       
-                        ## Write Header to csv
-                        csv_writer.writerow(header)                 
+                ## Set base counts for objects/csv's
+                object_count = 0
+                csv_count = 1
+                
+                ## Iterate/Process through Objects
+                for obj in bucket.objects.all():
                             
-                        ## Set base counts for objects/csv's
-                        object_count = 0
-                        csv_count = 1
-                        
-                        ## Iterate/Process through Objects
-                        for obj in bucket.objects.all():
-                                    
-                            ## Convert last_modified time to year-month-day format
-                            lstmod = obj.last_modified.date()                                    
+                    ## Convert last_modified time to year-month-day format
+                    lstmod = obj.last_modified.date()                                    
 
-                            ## Conditional check for object lastmodified date being 3+ years old
-                            if lstmod <= CHECK_DATE:                 
-                                    
-                                ## define variables for data rows
-                                data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
-                                        obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
-                                
-                                ## Write Data to csv
-                                csv_writer.writerow(data)
-                                
-                                ## Increment the object counter
-                                object_count += 1
-                                
-                                ## Check object count, if count reaches 10000, create a new CSV file
-                                if object_count == 10000:
-                                    file.close()
-                                    
-                                    ## Create new CSV file with incremented name
-                                    csv_file_name = f"Data/{bucket.name}/{bucket.name}_{csv_count}.csv"
-                                    csv_file = open(csv_file_name, 'w', newline='')
-                                    csv_writer = csv.writer('Data/%s', csv_file)
-                                    
-                                    ## Write Header row
-                                    csv_writer.writerow(header)
-                                    
-                                    ## Reset the object count and increment the csv count
-                                    object_count = 0
-                                    csv_count += 1
-                                
-                        ## Close the CSV file for the current bucket
-                        csv_file.close()
+                    ## Conditional check for object lastmodified date being 3+ years old
+                    if lstmod <= CHECK_DATE:                 
+                            
+                        ## define variables for data rows
+                        data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
+                                obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
+                        
+                        ## Write Data to csv
+                        csv_writer.writerow(data)
+                        
+                        ## Increment the object counter
+                        object_count += 1
+                        
+                        ## Check object count, if count reaches 10000, create a new CSV file
+                        if object_count == 10000:
+                            file.close()
+                            
+                            ## Create new CSV file with incremented name
+                            csv_file_name = f'Data/{bucket.name}/{bucket.name}_{csv_count}.csv'
+                            csv_file = open(csv_file_name, 'w', newline='')
+                            csv_writer = csv.writer('Data/%s', csv_file)
+                            
+                            ## Write Header row
+                            csv_writer.writerow(header)
+                            
+                            ## Reset the object count and increment the csv count
+                            object_count = 0
+                            csv_count += 1
+                        
+                ## Close the CSV file for the current bucket
+                csv_file.close()
                                 
 
                             
