@@ -70,7 +70,7 @@ def get_bucket_data(buckets: list) -> None:
                 logging.info("Processing Bucket: %s \n", bucket.name)
                 
                 ## Create directories for CSV's
-                bucket_dir = os.path.join(data_dir, bucket)
+                bucket_dir = os.path.join(data_dir, bucket.name)
                 if not os.path.exists(bucket_dir):
                     os.makedirs(data_dir)
                 
