@@ -76,7 +76,7 @@ def get_bucket_data(buckets: list) -> None:
             logging.info("created: %s... ", bucket_dir)
             
             ## Create a CSV file for each bucket
-            csv_file = os.path.join(bucket_dir, f'{bucket.name}.csv')
+            csv_file = os.path.join(bucket_dir, f'{bucket.name}_0.csv')
                 
             ## Open CSV in write mode
             with open (csv_file, 'w', newline='') as file:
