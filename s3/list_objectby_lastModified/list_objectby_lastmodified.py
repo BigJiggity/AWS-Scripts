@@ -65,8 +65,7 @@ def get_bucket_data(buckets: list) -> None:
                     logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
                 
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
-                else:
-                    bucket.name not in skip_buckets:
+                elif bucket.name not in skip_buckets:
                     logging.info("Processing Bucket: %s \n", bucket.name)                    
                           
         ## Iterate/Process through Objects
