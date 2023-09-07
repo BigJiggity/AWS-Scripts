@@ -106,10 +106,6 @@ def get_bucket_data(buckets: list) -> None:
                         data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
                                 obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
                         
-                    ## Open CSV for writing
-                        with open (csv_file, 'w', newline='') as file:
-                         csv_writer = csv.writer(file)
-                        
                         ## Write Data to csv
                         csv_writer.writerow(data)
                     
