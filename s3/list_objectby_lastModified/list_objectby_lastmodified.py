@@ -130,7 +130,7 @@ def get_bucket_data(buckets: list) -> None:
                             csv_count += 1
                         
                 ## Close the CSV file for the current bucket
-                csv_file.close()
+                file.close()
                                 
 
                             
