@@ -45,6 +45,9 @@ def get_bucket_data(buckets: list) -> None:
         for bucket in buckets:
                 logging.info("Getting data for bucket: %s", bucket.name)
                 
+                # Get the object data in the bucket
+                objects = bucket.objects.all() 
+                
                 ## Convert creation_date time to year-month-day format
                 bcdate = bucket.creation_date.date()
                 
@@ -55,14 +58,10 @@ def get_bucket_data(buckets: list) -> None:
                 ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
                 elif bcdate >= CHECK_DATE:
                     skip_buckets.append(bucket.name)
-                    logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)    
-                
-                else:
-                    # Get the objects in the bucket
-                    objects = bucket.objects.all()    
+                    logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)     
                 
                 ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
-                if len(list(objects)) ==0:
+                elif len(list(objects)) == 0:
                     skip_buckets.append(bucket.name)
                     logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
                 
