@@ -71,7 +71,22 @@ def get_bucket_data(buckets: list) -> None:
                     header: list[str] = ['File_Name', 'Last_Modified_Date',
                             'File Size', 'Storage Class', 'Owner']
                     
-                     ## Check if the CSV file has reached the row limit
+                    for obj in bucket.objects.all():
+                                ## Convert last_modified time to year-month-day format
+                                lstmod = obj.last_modified.date()    
+                                ## Write Header to csv
+                                csv_writer.writerow(header)
+
+                                ## Conditional check for object lastmodified date being 3+ years old
+                                if lstmod <= CHECK_DATE:                 
+                                        ## define variables for data rows
+                                        data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
+                                                obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
+
+                                        ## Write Data to csv
+                                        csv_writer.writerow(data)
+                    
+                    ## Check if the CSV file has reached the row limit
                     if file.tell() >= 10000:
                         
                         ## Close the current CSV file
@@ -90,24 +105,7 @@ def get_bucket_data(buckets: list) -> None:
                         writer = csv.writer(file)
                         
                         ## Write the header row for the new CSV file
-                        writer.writerow(header)
-                        
-                    ## List objects inside the bucket
-                    else:
-                        for obj in bucket.objects.all():
-                                ## Convert last_modified time to year-month-day format
-                                lstmod = obj.last_modified.date()    
-                                ## Write Header to csv
-                                csv_writer.writerow(header)
-
-                                ## Conditional check for object lastmodified date being 3+ years old
-                                if lstmod <= CHECK_DATE:                 
-                                        ## define variables for data rows
-                                        data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
-                                                obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
-
-                                        ## Write Data to csv
-                                        csv_writer.writerow(data)
+                        writer.writerow(header)                   
                                                                
 if __name__ == "__main__":
         
