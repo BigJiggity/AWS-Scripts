@@ -22,18 +22,11 @@ CHECK_DATE: date = date(2020, 8, 1)
 ## Check if Data Directory exists, if not create data folder
 if not os.path.exists("Data"):
     os.makedirs("Data")
-
-## Folder for file check
-folder_path = "Data/"
-
+    
 ## List of buckets to skip during iteration
 skip_buckets = ["analytics-emr-runtime",]
    
-    ## Add previously processed buckets to the skip_bucket list
-for file_name in os.listdir(folder_path):
-    if file_name.endswith(".csv"):
-        skip_buckets.append(os.path.splitext(file_name)[0])
-logging.info("front loading previously generated csv files into skip buckets")
+
 
 def get_bucket_data(buckets: list) -> None:
         """ 
@@ -43,7 +36,13 @@ def get_bucket_data(buckets: list) -> None:
         
         ## Iterate/Process through each bucket
         for bucket in buckets:
-                logging.info("Getting data for bucket: %s", bucket.name)
+           
+           ## check for bucket directory, if it exists add it to skip_buckets
+            try:
+                os.mkdir("Data/%s", bucket)
+            except FileExistsError:
+                skip_buckets.append(bucket)
+                logging.info("front loading previously processed buckets into the skip_buckets list... \n")
                 
                 # Get the object data in the bucket
                 objects = bucket.objects.all() 
@@ -51,6 +50,7 @@ def get_bucket_data(buckets: list) -> None:
                 ## Convert creation_date time to year-month-day format
                 bcdate = bucket.creation_date.date()
                 
+                logging.info("Getting data for bucket: %s \n", bucket.name)
                 ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
                 if bucket.name in skip_buckets:
                     logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
@@ -70,10 +70,10 @@ def get_bucket_data(buckets: list) -> None:
                     logging.info("Processing Bucket: %s \n", bucket.name)
                     
                     ## Create a CSV file for each bucket
-                    csv_file = f"{bucket.name}.csv"
+                    csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
                         
                     ## Open CSV in write mode
-                    with open('Data/%s' %csv_file, 'w', newline='') as file:
+                    with open('Data/%s/%s' %bucket.name %csv_file, 'w', newline='') as file:
                         csv_writer = csv.writer(file)
                         
                         ## define values for header row
@@ -111,9 +111,9 @@ def get_bucket_data(buckets: list) -> None:
                                     file.close()
                                     
                                     ## Create new CSV file with incremented name
-                                    csv_file_name = f"{bucket.name}_{csv_count}.csv"
+                                    csv_file_name = f"Data/{bucket.name}/{bucket.name}_{csv_count}.csv"
                                     csv_file = open(csv_file_name, 'w', newline='')
-                                    csv_writer = csv.writer(csv_file)
+                                    csv_writer = csv.writer('Data/%s', csv_file)
                                     
                                     ## Write Header row
                                     csv_writer.writerow(header)
