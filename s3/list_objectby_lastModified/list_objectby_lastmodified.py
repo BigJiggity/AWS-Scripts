@@ -72,7 +72,7 @@ def get_bucket_data(buckets: list) -> None:
                 ## Create directories for CSV's
                 bucket_dir = os.path.join(data_dir, bucket.name)
                 if not os.path.exists(bucket_dir):
-                    os.makedirs(data_dir)
+                    os.makedirs(bucket_dir)
                 
                 ## Create a CSV file for each bucket
                 csv_file = os.path.join(bucket_dir, f'{bucket.name}.csv')
