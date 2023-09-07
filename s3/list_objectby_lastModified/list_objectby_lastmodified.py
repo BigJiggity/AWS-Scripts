@@ -83,48 +83,48 @@ def get_bucket_data(buckets: list) -> None:
                         ## Write Header to csv
                         csv_writer.writerow(header)                 
                             
-                    ## Set base counts for objects/csv's
-                    object_count = 0
-                    csv_count = 1
-                    
-                    ## Iterate/Process through Objects
-                    for obj in bucket.objects.all():
-                                
-                        ## Convert last_modified time to year-month-day format
-                        lstmod = obj.last_modified.date()                                    
+                        ## Set base counts for objects/csv's
+                        object_count = 0
+                        csv_count = 1
+                        
+                        ## Iterate/Process through Objects
+                        for obj in bucket.objects.all():
+                                    
+                            ## Convert last_modified time to year-month-day format
+                            lstmod = obj.last_modified.date()                                    
 
-                        ## Conditional check for object lastmodified date being 3+ years old
-                        if lstmod <= CHECK_DATE:                 
+                            ## Conditional check for object lastmodified date being 3+ years old
+                            if lstmod <= CHECK_DATE:                 
+                                    
+                                ## define variables for data rows
+                                data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
+                                        obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
                                 
-                            ## define variables for data rows
-                            data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
-                                    obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
-                            
-                            ## Write Data to csv
-                            csv_writer.writerow(data)
-                            
-                            ## Increment the object counter
-                            object_count += 1
-                            
-                            ## Check object count, if count reaches 10000, create a new CSV file
-                            if object_count == 10000:
+                                ## Write Data to csv
+                                csv_writer.writerow(data)
+                                
+                                ## Increment the object counter
+                                object_count += 1
+                                
+                                ## Check object count, if count reaches 10000, create a new CSV file
+                                if object_count == 10000:
+                                    csv_file.close()
+                                    
+                                    ## Create new CSV file with incremented name
+                                    csv_file_name = f"{bucket.name}_{csv_count}.csv"
+                                    csv_file = open(csv_file_name, 'w', newline='')
+                                    csv_writer = csv.writer(csv_file)
+                                    
+                                    ## Write Header row
+                                    csv_writer.writerow(header)
+                                    
+                                    ## Reset the object count and increment the csv count
+                                    object_count = 0
+                                    csv_count += 1
+                                
+                                ## Close the CSV file for the current bucket
                                 csv_file.close()
                                 
-                                ## Create new CSV file with incremented name
-                                csv_file_name = f"{bucket.name}_{csv_count}.csv"
-                                csv_file = open(csv_file_name, 'w', newline='')
-                                csv_writer = csv.writer(csv_file)
-                                
-                                ## Write Header row
-                                csv_writer.writerow(header)
-                                
-                                ## Reset the object count and increment the csv count
-                                object_count = 0
-                                csv_count += 1
-                            
-                            ## Close the CSV file for the current bucket
-                            csv_file.close()
-                            
 
                             
                                 
