@@ -75,7 +75,7 @@ def get_bucket_data(buckets: list) -> None:
                 csv_file = f"Data/{bucket.name}/{bucket.name}.csv"
                     
                 ## Open CSV in write mode
-                with open('Data/%s/%s' %bucket.name %csv_file, 'w', newline='') as file:
+                with open('Data/%s/%s' %bucket.name, csv_file, 'w', newline='') as file:
                     csv_writer = csv.writer(file)
                     
                     ## define values for header row
