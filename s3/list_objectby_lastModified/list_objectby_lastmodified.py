@@ -96,18 +96,19 @@ def get_bucket_data(buckets: list) -> None:
                         writer.writerow(header)
                         
                     ## List objects inside the bucket
-                    for obj in bucket.objects.all():
-                            ## Convert last_modified time to year-month-day format
-                            lstmod = obj.last_modified.date()
+                    else:
+                        for obj in bucket.objects.all():
+                                ## Convert last_modified time to year-month-day format
+                                lstmod = obj.last_modified.date()
 
-                            ## Conditional check for object lastmodified date being 3+ years old
-                            if lstmod <= CHECK_DATE:                 
-                                    ## define variables for data rows
-                                    data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
-                                            obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
+                                ## Conditional check for object lastmodified date being 3+ years old
+                                if lstmod <= CHECK_DATE:                 
+                                        ## define variables for data rows
+                                        data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
+                                                obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
 
-                                    ## Write Data to csv
-                                    csv_writer.writerow(data)
+                                        ## Write Data to csv
+                                        csv_writer.writerow(data)
                                                                
 if __name__ == "__main__":
         
