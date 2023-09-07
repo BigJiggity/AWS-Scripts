@@ -67,8 +67,26 @@ def get_bucket_data(buckets: list) -> None:
                 
                 ## Check if bucket is not in the skip_bucket list, process object data in bucket
                 elif bucket.name not in skip_buckets:
-                    logging.info("Processing Bucket: %s \n", bucket.name)                    
+                    logging.info("Processing Bucket: %s \n", bucket.name)
+                    
+                    ## Create a CSV file for each bucket
+                    csv_file = f"{bucket.name}.csv"
+                        
+                    ## Open CSV in write mode
+                    with open('Data/%s' %csv_file, 'w', newline='') as file:
+                        csv_writer = csv.writer(file)
+                        
+                        ## define values for header row
+                        header: list[str] = ['File_Name', 'Last_Modified_Date',
+                            'File Size', 'Storage Class', 'Owner']  
+                       
+                        ## Write Header to csv
+                        csv_writer.writerow(header)                 
                             
+                    ## Set base counts for objects/csv's
+                    object_count = 0
+                    csv_count = 1
+                    
                     ## Iterate/Process through Objects
                     for obj in bucket.objects.all():
                                 
@@ -81,42 +99,56 @@ def get_bucket_data(buckets: list) -> None:
                             ## define variables for data rows
                             data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
                                     obj.size, '%s' %obj.storage_class, '%s' %obj.owner]
-
-                            ## define values for header row
-                            header: list[str] = ['File_Name', 'Last_Modified_Date',
-                                    'File Size', 'Storage Class', 'Owner']
+                            
+                            ## Write Data to csv
+                            csv_writer.writerow(data)
+                            
+                            ## Increment the object counter
+                            object_count += 1
+                            
+                            ## Check object count, if count reaches 10000, create a new CSV file
+                            if object_count == 10000:
+                                csv_file.close()
                                 
-                            ## Create a CSV file for each bucket
-                            csv_file = f"{bucket.name}.csv"
+                                ## Create new CSV file with incremented name
+                                csv_file_name = f"{bucket.name}_{csv_count}.csv"
+                                csv_file = open(csv_file_name, 'w', newline='')
+                                csv_writer = csv.writer(csv_file)
                                 
-                            ## Open CSV in write mode
-                            with open('Data/%s' %csv_file, 'w', newline='') as file:
-                                csv_writer = csv.writer(file)
-                                ## Write Header to csv
+                                ## Write Header row
                                 csv_writer.writerow(header)
-                                ## Write Data to csv
-                                csv_writer.writerow(data)
+                                
+                                ## Reset the object count and increment the csv count
+                                object_count = 0
+                                csv_count += 1
+                            
+                            ## Close the CSV file for the current bucket
+                            csv_file.close()
+                            
+
+                            
+                                
                                     
-                                ## Check if the CSV file has reached the row limit
-                                if file.tell() >= 10000:
+                                # ## Check if the CSV file has reached the row limit
+                                # if file.tell() >= 10000:
                                     
-                                    ## Close the current CSV file
-                                    file.close()
-                                    logging.info("%s has reached 10000 rows, closing file... \n" %file)
+                                #     ## Close the current CSV file
+                                #     file.close()
+                                #     logging.info("%s has reached 10000 rows, closing file... \n" %file)
                                     
-                                    ## Increment the file name number
-                                    file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
+                                #     ## Increment the file name number
+                                #     file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
                                     
-                                    ## Create a new CSV file with the incremented number
-                                    new_csv_file = f"{bucket.name}_{file_number}.csv"
-                                    logging.info("Creating new csv to continue scan: %s \n" %new_csv_file)
+                                #     ## Create a new CSV file with the incremented number
+                                #     new_csv_file = f"{bucket.name}_{file_number}.csv"
+                                #     logging.info("Creating new csv to continue scan: %s \n" %new_csv_file)
                                     
-                                    ## Open the new CSV file in write mode
-                                    file = open(new_csv_file, 'w', newline='')
-                                    writer = csv.writer(file)
+                                #     ## Open the new CSV file in write mode
+                                #     file = open(new_csv_file, 'w', newline='')
+                                #     writer = csv.writer(file)
                                     
-                                    ## Write the header row for the new CSV file
-                                    writer.writerow(header)                   
+                                #     ## Write the header row for the new CSV file
+                                #     writer.writerow(header)                   
                                                         
 if __name__ == "__main__":
         
