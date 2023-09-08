@@ -3,9 +3,11 @@
 import boto3
 import logging
 import csv
-import os
-from datetime import date
 import sys
+import os
+
+from datetime import date
+
 
 ## Setup logging config
 logging.basicConfig( 
@@ -46,28 +48,14 @@ def get_bucket_data(buckets: list) -> None:
             
             logging.info("Getting data for bucket: %s \n", bucket.name)
         
-            ## check for bucket directory, if it exists add it to skip_buckets
-            if os.path.exists(f'Data/{bucket.name}'):
+            ## check for bucket conditions to skip
+            if os.path.exists(f'Data/{bucket.name}') or bcdate >= CHECK_DATE or len(list(objects)) == 0:
+                logging.info("Skipping Bucket %s sinec it's either been processed already, has 0 objects, or is older than 3 years", bucket.name)
                 skip_buckets.append(bucket.name)
-                logging.info("front loading previously processed buckets into the skip_buckets list... \n")
-                
-            ## Logic for logging purposes, skipping buckets if they exist in skip_buckets list
-            if bucket.name in skip_buckets:
-                logging.info("Bucket %s has been processed, Skipping Bucket... \n", bucket.name)
-            
-            ## Check if bucket was created in the last 3yrs, if yes, add to the skip buckets variable so they are not processed.
-            elif bcdate >= CHECK_DATE:
-                skip_buckets.append(bucket.name)
-                logging.info("Checking creation date: %s: - %s is newer than 3yrs - adding to skip_buckets list... \n", bucket.creation_date, bucket.name)     
-            
-            ## Check if there are any objects in the bucket, if not, add bucket to skip_buckets list
-            elif len(list(objects)) == 0:
-                skip_buckets.append(bucket.name)
-                logging.info("Bucket %s has zero objects, added to skip bucket list \n", bucket.name)
-            
+
             ## Check if bucket is not in the skip_bucket list, process object data in bucket
             elif bucket.name not in skip_buckets:
-                logging.info("Processing Bucket: %s \n", bucket.name)
+                logging.info("Processing Bucket...: %s \n", bucket.name)
                 
             ## Create directories for CSV's
             bucket_dir = os.path.join(data_dir, bucket.name)
@@ -131,36 +119,12 @@ def get_bucket_data(buckets: list) -> None:
                         
                 ## Close the CSV file for the current bucket
                 file.close()
-                                
-
-                            
-                                
-                                    
-                                # ## Check if the CSV file has reached the row limit
-                                # if file.tell() >= 10000:
-                                    
-                                #     ## Close the current CSV file
-                                #     file.close()
-                                #     logging.info("%s has reached 10000 rows, closing file... \n" %file)
-                                    
-                                #     ## Increment the file name number
-                                #     file_number = int(csv_file.split('.')[0].split('_')[1]) + 1
-                                    
-                                #     ## Create a new CSV file with the incremented number
-                                #     new_csv_file = f"{bucket.name}_{file_number}.csv"
-                                #     logging.info("Creating new csv to continue scan: %s \n" %new_csv_file)
-                                    
-                                #     ## Open the new CSV file in write mode
-                                #     file = open(new_csv_file, 'w', newline='')
-                                #     writer = csv.writer(file)
-                                    
-                                #     ## Write the header row for the new CSV file
-                                #     writer.writerow(header)                   
+                
                                                         
 if __name__ == "__main__":
         
         try:
-        ## Create resource
+                ## Create resource
                 s3 = boto3.resource('s3')
         except Exception as e:
                 logging.error("Error creating S3 resource. Error: %s \n", e)
