@@ -1,0 +1,66 @@
+2023-10-26 15:16:53,582 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-10-26 15:16:54,250 INFO: Getting data for bucket: l640-test-bucket 
+
+2023-10-26 15:16:54,700 INFO: Processing Bucket...: l640-test-bucket 
+
+2023-10-26 15:16:54,700 INFO: created: Data/l640-test-bucket... 
+2023-10-26 15:16:54,758 INFO: Getting data for bucket: l640-test-bucket-01 
+
+2023-10-26 15:16:54,758 INFO: Skipping Bucket l640-test-bucket-01 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:16:54,758 INFO: Getting data for bucket: l640-test-bucket-02 
+
+2023-10-26 15:16:54,759 INFO: Skipping Bucket l640-test-bucket-02 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:16:54,759 INFO: Getting data for bucket: l640-test-bucket-03 
+
+2023-10-26 15:16:54,759 INFO: Skipping Bucket l640-test-bucket-03 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:16:54,759 INFO: Getting data for bucket: l640-test-bucket-04 
+
+2023-10-26 15:16:54,759 INFO: Skipping Bucket l640-test-bucket-04 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:16:54,759 INFO: Script Complete! 
+
+2023-10-26 15:20:31,192 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-10-26 15:20:31,718 INFO: Getting data for bucket: l640-test-bucket 
+
+2023-10-26 15:20:31,962 INFO: Processing Bucket...: l640-test-bucket 
+
+2023-10-26 15:20:31,962 INFO: created: Data/l640-test-bucket... 
+2023-10-26 15:20:32,165 INFO: Getting data for bucket: l640-test-bucket-01 
+
+2023-10-26 15:20:32,165 INFO: Skipping Bucket l640-test-bucket-01 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:20:32,165 INFO: Getting data for bucket: l640-test-bucket-02 
+
+2023-10-26 15:20:32,165 INFO: Skipping Bucket l640-test-bucket-02 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:20:32,166 INFO: Getting data for bucket: l640-test-bucket-03 
+
+2023-10-26 15:20:32,166 INFO: Skipping Bucket l640-test-bucket-03 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:20:32,166 INFO: Getting data for bucket: l640-test-bucket-04 
+
+2023-10-26 15:20:32,166 INFO: Skipping Bucket l640-test-bucket-04 sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:20:32,166 INFO: Script Complete! 
+
+2023-10-26 15:27:21,868 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-10-26 15:27:22,393 INFO: Getting data for bucket: l640-test-bucket 
+
+2023-10-26 15:27:22,393 INFO: Skipping Bucket l640-test-bucket sinec it's either been processed already, has 0 objects, or is older than 3 years
+2023-10-26 15:27:22,394 INFO: Getting data for bucket: l640-test-bucket-01 
+
+2023-10-26 15:27:22,838 INFO: Processing Bucket...: l640-test-bucket-01 
+
+2023-10-26 15:27:22,838 INFO: created: Data/l640-test-bucket-01... 
+2023-10-26 15:27:22,888 INFO: Getting data for bucket: l640-test-bucket-02 
+
+2023-10-26 15:27:23,365 INFO: Processing Bucket...: l640-test-bucket-02 
+
+2023-10-26 15:27:23,365 INFO: created: Data/l640-test-bucket-02... 
+2023-10-26 15:27:23,439 INFO: Getting data for bucket: l640-test-bucket-03 
+
+2023-10-26 15:27:23,896 INFO: Processing Bucket...: l640-test-bucket-03 
+
+2023-10-26 15:27:23,896 INFO: created: Data/l640-test-bucket-03... 
+2023-10-26 15:27:23,946 INFO: Getting data for bucket: l640-test-bucket-04 
+
+2023-10-26 15:27:24,424 INFO: Processing Bucket...: l640-test-bucket-04 
+
+2023-10-26 15:27:24,424 INFO: created: Data/l640-test-bucket-04... 
+2023-10-26 15:27:24,472 INFO: Script Complete! 
+
