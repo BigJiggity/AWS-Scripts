@@ -63,8 +63,12 @@ def get_bucket_data(buckets: list) -> None:
                     os.makedirs(bucket_dir)
                 logging.info("created: %s... ", bucket_dir)
             
+                 ## Set base counts for objects/csv's
+                object_count = 0
+                csv_count = 1
+                
                 ## Create a CSV file for each bucket
-                csv_file = os.path.join(bucket_dir, f'{bucket.name}_0.csv')
+                csv_file = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
                     
                 ## Open CSV in write mode
                 with open (csv_file, 'w', newline='') as file:
@@ -75,11 +79,7 @@ def get_bucket_data(buckets: list) -> None:
                         'File Size', 'Storage Class', 'Owner']  
                     
                     ## Write Header to csv
-                    csv_writer.writerow(header)                 
-                        
-                    ## Set base counts for objects/csv's
-                    object_count = 0
-                    csv_count = 0
+                    csv_writer.writerow(header)                
                     
                     ## Iterate/Process through Objects
                     for obj in bucket.objects.all():

@@ -92,3 +92,59 @@
 2023-11-02 01:00:35,051 INFO: created: Data/l640-test-bucket-04... 
 2023-11-02 01:00:35,521 INFO: Script Complete! 
 
+2023-11-02 16:47:44,673 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-02 16:47:45,266 INFO: Getting data for bucket: l640-test-bucket 
+
+2023-11-02 16:47:45,266 INFO: Processing Bucket...: l640-test-bucket 
+
+2023-11-02 16:47:45,267 INFO: created: Data/l640-test-bucket... 
+2023-11-02 16:47:45,740 INFO: Getting data for bucket: l640-test-bucket-01 
+
+2023-11-02 16:47:45,740 INFO: Processing Bucket...: l640-test-bucket-01 
+
+2023-11-02 16:47:45,740 INFO: created: Data/l640-test-bucket-01... 
+2023-11-02 16:47:46,260 INFO: Getting data for bucket: l640-test-bucket-02 
+
+2023-11-02 16:47:46,261 INFO: Processing Bucket...: l640-test-bucket-02 
+
+2023-11-02 16:47:46,261 INFO: created: Data/l640-test-bucket-02... 
+2023-11-02 16:47:46,753 INFO: Getting data for bucket: l640-test-bucket-03 
+
+2023-11-02 16:47:46,753 INFO: Processing Bucket...: l640-test-bucket-03 
+
+2023-11-02 16:47:46,754 INFO: created: Data/l640-test-bucket-03... 
+2023-11-02 16:47:47,206 INFO: Getting data for bucket: l640-test-bucket-04 
+
+2023-11-02 16:47:47,206 INFO: Processing Bucket...: l640-test-bucket-04 
+
+2023-11-02 16:47:47,206 INFO: created: Data/l640-test-bucket-04... 
+2023-11-02 16:47:47,728 INFO: Script Complete! 
+
+2023-11-02 16:50:52,597 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-02 16:50:53,068 INFO: Getting data for bucket: l640-test-bucket 
+
+2023-11-02 16:50:53,437 INFO: Processing Bucket...: l640-test-bucket 
+
+2023-11-02 16:50:53,437 INFO: created: Data/l640-test-bucket... 
+2023-11-02 16:50:53,487 INFO: Getting data for bucket: l640-test-bucket-01 
+
+2023-11-02 16:50:53,846 INFO: Processing Bucket...: l640-test-bucket-01 
+
+2023-11-02 16:50:53,847 INFO: created: Data/l640-test-bucket-01... 
+2023-11-02 16:50:53,894 INFO: Getting data for bucket: l640-test-bucket-02 
+
+2023-11-02 16:50:54,131 INFO: Processing Bucket...: l640-test-bucket-02 
+
+2023-11-02 16:50:54,131 INFO: created: Data/l640-test-bucket-02... 
+2023-11-02 16:50:54,182 INFO: Getting data for bucket: l640-test-bucket-03 
+
+2023-11-02 16:50:54,529 INFO: Processing Bucket...: l640-test-bucket-03 
+
+2023-11-02 16:50:54,529 INFO: created: Data/l640-test-bucket-03... 
+2023-11-02 16:50:54,580 INFO: Getting data for bucket: l640-test-bucket-04 
+
+2023-11-02 16:50:54,894 INFO: Processing Bucket...: l640-test-bucket-04 
+
+2023-11-02 16:50:54,894 INFO: created: Data/l640-test-bucket-04... 
+2023-11-02 16:50:54,947 INFO: Script Complete! 
+
