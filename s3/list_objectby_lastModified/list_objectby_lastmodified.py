@@ -19,7 +19,7 @@ logging.basicConfig(
     )
 
 ## Set date for how far back you want to check
-CHECK_DATE: date = date(2023, 11, 1)
+CHECK_DATE: date = date(2019, 11, 1)
 
 ## Check if Data Directory exists, if not create data folder
 data_dir = 'Data'
@@ -49,7 +49,7 @@ def get_bucket_data(buckets: list) -> None:
             logging.info("Getting data for bucket: %s \n", bucket.name)
         
             ## check for bucket conditions to skip
-            if os.path.exists(f'Data/{bucket.name}') and bcdate <= CHECK_DATE and len(list(objects)) == 0:
+            if os.path.exists(f'Data/{bucket.name}') and bcdate >= CHECK_DATE and len(list(objects)) == 0:
                 logging.info("Skipping Bucket %s sinec it's either been processed already, has 0 objects, or is older than 3 years", bucket.name)
                 skip_buckets.append(bucket.name)
             
@@ -88,7 +88,7 @@ def get_bucket_data(buckets: list) -> None:
                         lstmod = obj.last_modified.date()                                    
 
                         ## Conditional check for object lastmodified date being 3+ years old
-                        if lstmod <= CHECK_DATE:                 
+                        if lstmod >= CHECK_DATE:                 
                                 
                             ## define variables for data rows
                             data: list = ['%s' %obj.key, '%s' %obj.last_modified, '%s' %
