@@ -49,7 +49,7 @@ def get_bucket_data(buckets: list) -> None:
             logging.info("Getting data for bucket: %s \n", bucket.name)
         
             ## check for bucket conditions to skip
-            if os.path.exists(f'Data/{bucket.name}') or bcdate <= CHECK_DATE or len(list(objects)) == 0:
+            if os.path.exists(f'Data/{bucket.name}') and bcdate <= CHECK_DATE and len(list(objects)) == 0:
                 logging.info("Skipping Bucket %s sinec it's either been processed already, has 0 objects, or is older than 3 years", bucket.name)
                 skip_buckets.append(bucket.name)
             
@@ -79,7 +79,7 @@ def get_bucket_data(buckets: list) -> None:
                         
                     ## Set base counts for objects/csv's
                     object_count = 0
-                    csv_count = 1
+                    csv_count = 0
                     
                     ## Iterate/Process through Objects
                     for obj in bucket.objects.all():
