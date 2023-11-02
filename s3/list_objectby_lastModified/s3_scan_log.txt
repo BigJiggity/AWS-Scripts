@@ -148,3 +148,31 @@
 2023-11-02 16:50:54,894 INFO: created: Data/l640-test-bucket-04... 
 2023-11-02 16:50:54,947 INFO: Script Complete! 
 
+2023-11-02 16:55:32,738 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-02 16:55:33,139 INFO: Getting data for bucket: l640-test-bucket 
+
+2023-11-02 16:55:33,139 INFO: Processing Bucket...: l640-test-bucket 
+
+2023-11-02 16:55:33,140 INFO: created: Data/l640-test-bucket... 
+2023-11-02 16:55:33,510 INFO: Getting data for bucket: l640-test-bucket-01 
+
+2023-11-02 16:55:33,510 INFO: Processing Bucket...: l640-test-bucket-01 
+
+2023-11-02 16:55:33,510 INFO: created: Data/l640-test-bucket-01... 
+2023-11-02 16:55:33,822 INFO: Getting data for bucket: l640-test-bucket-02 
+
+2023-11-02 16:55:33,822 INFO: Processing Bucket...: l640-test-bucket-02 
+
+2023-11-02 16:55:33,822 INFO: created: Data/l640-test-bucket-02... 
+2023-11-02 16:55:34,028 INFO: Getting data for bucket: l640-test-bucket-03 
+
+2023-11-02 16:55:34,028 INFO: Processing Bucket...: l640-test-bucket-03 
+
+2023-11-02 16:55:34,028 INFO: created: Data/l640-test-bucket-03... 
+2023-11-02 16:55:34,345 INFO: Getting data for bucket: l640-test-bucket-04 
+
+2023-11-02 16:55:34,345 INFO: Processing Bucket...: l640-test-bucket-04 
+
+2023-11-02 16:55:34,345 INFO: created: Data/l640-test-bucket-04... 
+2023-11-02 16:55:34,541 INFO: Script Complete! 
+
