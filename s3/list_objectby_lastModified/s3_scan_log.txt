@@ -1,0 +1,33 @@
+2023-11-03 16:46:38,931 INFO: Loading cached SSO token for cengage_objectscan
+2023-11-03 16:46:39,876 INFO: Getting data for bucket: alsv2-production 
+
+2023-11-03 16:46:39,876 INFO: Processing Bucket...: alsv2-production 
+
+2023-11-03 16:46:39,877 INFO: created: Data/alsv2-production... 
+2023-11-03 16:46:39,877 INFO: Current file is: Data/alsv2-production/alsv2-production.csv
+2023-11-03 16:46:53,729 INFO: object count: 1 
+
+2023-11-03 16:46:53,729 INFO: Getting data for bucket: alteryx-prod 
+
+2023-11-03 16:46:53,729 INFO: Processing Bucket...: alteryx-prod 
+
+2023-11-03 16:46:53,736 INFO: created: Data/alteryx-prod... 
+2023-11-03 16:46:53,736 INFO: Current file is: Data/alteryx-prod/alteryx-prod.csv
+2023-11-03 16:46:54,033 INFO: object count: 1 
+
+2023-11-03 16:46:54,041 INFO: Getting data for bucket: analytics-emr-runtime 
+
+2023-11-03 16:46:54,041 INFO: Getting data for bucket: aplia-logs-prod 
+
+2023-11-03 16:46:54,042 INFO: Processing Bucket...: aplia-logs-prod 
+
+2023-11-03 16:46:54,066 INFO: created: Data/aplia-logs-prod... 
+2023-11-03 16:46:54,066 INFO: Current file is: Data/aplia-logs-prod/aplia-logs-prod.csv
+2023-11-03 16:47:24,538 INFO: object count: 1 
+
+2023-11-03 16:47:24,538 INFO: Getting data for bucket: aplia-materials-prod 
+
+2023-11-03 16:47:24,538 INFO: Processing Bucket...: aplia-materials-prod 
+
+2023-11-03 16:47:24,543 INFO: created: Data/aplia-materials-prod... 
+2023-11-03 16:47:24,543 INFO: Current file is: Data/aplia-materials-prod/aplia-materials-prod.csv

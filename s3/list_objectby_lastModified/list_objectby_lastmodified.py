@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from operator import truediv
 import boto3
 import logging
 import csv
@@ -98,31 +99,34 @@ def get_bucket_data(buckets: list) -> None:
 
                             ## Set base count for csv's
                             csv_count = 0
-                            
-                            ## Write Data to csv
-                            csv_writer.writerow(data)
-                        
-                            ## Increment the object counter
-                            object_count += 1
 
-                            ## Check object count, if count reaches 10000, create a new CSV file
-                            if object_count == 10000:
-                                file.close()
-                                
-                                ## increment the csv count
-                                csv_count += 1
+                    while True:
+                        ## Write Data to csv
+                        csv_writer.writerow(data)
+                    
+                        ## Increment the object counter
+                        object_count += 1
 
-                                ## Create new CSV file with incremented name
-                                csv_file_name = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
-                                with open (csv_file_name, 'w', newline='') as new_file:
-                                    csv_writer = csv.writer(new_file)
-                                    logging.info("Created next csv file: %s \n", csv_file_name)
-                                
-                                    ## Write Header row
-                                    csv_writer.writerow(header)       
+                        logging.info("object count: %s \n", object_count)
+
+                        ## Check object count, if count reaches 10000, create a new CSV file
+                        if object_count == 10000:
+                            file.close()
                             
-                    ## Close the CSV file for the current bucket
-                    file.close()
+                            ## increment the csv count
+                            csv_count += 1
+
+                            ## Create new CSV file with incremented name
+                            csv_file_name = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
+                            with open (csv_file_name, 'w', newline='') as new_file:
+                                csv_writer = csv.writer(new_file)
+                                logging.info("Created next csv file: %s \n", csv_file_name)
+                            
+                                ## Write Header row
+                                csv_writer.writerow(header)       
+                        break    
+                        ## Close the CSV file for the current bucket
+                        file.close()
 
                     ## Reset the object/csv count
                     object_count = 0
