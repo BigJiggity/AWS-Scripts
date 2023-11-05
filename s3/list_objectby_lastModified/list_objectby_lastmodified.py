@@ -54,10 +54,10 @@ def get_bucket_data(buckets: list) -> None:
                 logging.info("folder for %s already exists, skipping...", bucket.name)
                 skip_buckets.append(bucket.name)
                 
-            elif bcdate >= CHECK_DATE: 
+            # elif bcdate >= CHECK_DATE: 
 
-                logging.info("bucket %s isn't old enough, skipping...", bucket.name)
-                skip_buckets.append(bucket.name)
+            #     logging.info("bucket %s isn't old enough, skipping...", bucket.name)
+            #     skip_buckets.append(bucket.name)
             
             elif len(list(objects)) == 0:
                 
