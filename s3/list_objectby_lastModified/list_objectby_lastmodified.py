@@ -41,10 +41,10 @@ def get_bucket_data(buckets: list) -> None:
         for bucket in buckets:
     
             # Get the object data in the bucket
-            objects = bucket.objects.all() 
+            # objects = bucket.objects.all() 
             
-            ## Convert creation_date time to year-month-day format
-            bcdate = bucket.creation_date.date()
+            # ## Convert creation_date time to year-month-day format
+            # bcdate = bucket.creation_date.date()
             
             ## check for bucket conditions to skip
             folder_path = os.path.join(data_dir, bucket.name)
@@ -59,7 +59,7 @@ def get_bucket_data(buckets: list) -> None:
             #     logging.info("bucket %s isn't old enough, skipping...", bucket.name)
             #     skip_buckets.append(bucket.name)
             
-            elif len(list(objects)) == 0:
+            elif len(list(bucket.objects.all())) == 0:
                 
                 logging.info("There are no objects in bucket %s, skipping...", bucket.name)
                 skip_buckets.append(bucket.name)
