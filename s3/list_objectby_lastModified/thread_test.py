@@ -6,6 +6,7 @@ import sys
 from datetime import date
 from concurrent.futures import ThreadPoolExecutor
 import threading
+from multiprocessing import Pool
 
 ## Setup logging config
 logging.basicConfig( 
@@ -38,40 +39,13 @@ def scan_s3_buckets():
 
     threads = []
     for bucket in s3.buckets.all():
-        logging.info('scanning bucket: %s', bucket.name)
         t = threading.Thread(target=scan_bucket, args=(bucket,))
         threads.append(t)
         t.start()
 
     for t in threads:
         t.join()
-# Method to scan S3 buckets for objects over 4 years old
-# def scan_buckets():
-#     s3 = boto3.resource('s3')
-#     old_data_buckets = []
-    
-#     ## Iterate through buckets
-#     for bucket in s3.buckets.all():
-#         
-        
-#         ## Check for empty buckets
-#         if not list(bucket.objects.all()):
-#             
-#             continue
-        
-#         objects = bucket.objects.all()
-#         ## check buckets for objects over 4 years old
-#         for obj in objects:
-            
-#             ## Convert last_modified time to year-month-day format
-#             lstmod = obj.last_modified.date() 
-            
-#             ## load old_data_buckets list
-#             if lstmod > check_date:
-#                 old_data_buckets.append(bucket.name)
-#                 
-#                 break
-    
+
     return old_data_buckets
 
 # Method to create subdirectories and write object data to CSV files
