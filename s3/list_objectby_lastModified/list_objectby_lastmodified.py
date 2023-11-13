@@ -80,7 +80,7 @@ def get_bucket_data(buckets: list) -> None:
                         lstmod = obj.last_modified.date()                                    
 
                         ## Conditional check for object lastmodified date being 3+ years old
-                        if lstmod <= CHECK_DATE:                 
+                        if lstmod >= CHECK_DATE:                 
                                 
                             ## define variables for data rows
                             csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         buckets = s3.buckets.all()
 
         with Pool() as pool:
-        pool.map(get_bucket_data, buckets)
+            pool.map(get_bucket_data, buckets)
 
         #get_bucket_data(buckets)
         
