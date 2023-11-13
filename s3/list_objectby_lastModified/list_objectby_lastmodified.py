@@ -7,6 +7,7 @@ import sys
 import os
 
 from datetime import date
+from multiprocessing import Pool
 
 ## Setup logging config
 logging.basicConfig( 
@@ -40,8 +41,8 @@ def get_bucket_data(buckets: list) -> None:
         for bucket in buckets:
             
             if sum(1 for _ in bucket.objects.all()) == 0:
-            skip_buckets.append(bucket_name)
-            return
+                skip_buckets.append(bucket.name)
+                return
 
             ## check for bucket conditions to skip
             folder_path = os.path.join(data_dir, bucket.name)
@@ -131,7 +132,10 @@ if __name__ == "__main__":
                 logging.error("Error creating S3 resource. Error: %s \n", e)
                 sys.exit(1)
         buckets = s3.buckets.all()
-        
-        get_bucket_data(buckets)
+
+        with Pool() as pool:
+        pool.map(get_bucket_data, buckets)
+
+        #get_bucket_data(buckets)
         
         logging.info("Script Complete! \n")
