@@ -16,16 +16,15 @@ def thread_buckets():
     # Get all buckets
     global buckets
     buckets = list(s3.buckets.all())
-    
+           
     # Create a thread pool executor
-    executor = ThreadPoolExecutor(max_workers=50)
+    executor = ThreadPoolExecutor(max_workers=10)
     
     # Iterate through each bucket
     for bucket in buckets:
+        logging.info('Starting thread for bucket: %s', bucket.name)
         executor.submit(scan_buckets, bucket)
-    
-        global bucket_name
-        bucket_name = bucket.name
+        logging.info('Finished thread')
         
     # Wait for all threads to complete
     executor.shutdown(wait=True)
@@ -35,7 +34,8 @@ def thread_buckets():
 #################### scan buckets function ######################################################
 def scan_buckets(bucket):
     
-    logging.info("begining bucket scan... %s", bucket_name)
+    # Get all objects in the bucket
+    objects = list(bucket.objects.all())
     
     ## set variables/lists
     object_count = 0
@@ -43,19 +43,21 @@ def scan_buckets(bucket):
     csv_data = []
     check_date: date = date(2018, 12, 31)
     
-    for bucket in buckets:
-       
-        # Get all objects in the bucket
-        objects = list(bucket.objects.all())
-        
+    logging.info("begining function scan_buckets")
+    
+    if not objects:
+        logging.info('%s is empty, skipping... \n', bucket.name)
+        return
+    
+    else:
         # Iterate through each object
         for obj in objects:
             
             ## increase object counter
             object_count += 1 
-        
+
             # Check if the object is over 4 years old
-            if obj.last_modified > check_date:
+            if obj.last_modified < check_date:
                 
                 ## define variables for data rows
                 csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
@@ -77,9 +79,9 @@ def scan_buckets(bucket):
                     ##Increment csv count, clear data
                     csv_count += 1
                     csv_data = []  
-    
+
         header: list[str] = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']             
-    
+
         ## Create next csv file
         if csv_data:
             csv_file = open(f"{bucket.name}_{csv_count}.csv", "w", newline="")
@@ -88,7 +90,7 @@ def scan_buckets(bucket):
             csv_writer.writerows(csv_data)
             
             logging.info('Writing file: %s \n', csv_file)
-        
+
         logging.info(f"Scanning of bucket {bucket.name} completed. \n")
 ##########################################################################
 
