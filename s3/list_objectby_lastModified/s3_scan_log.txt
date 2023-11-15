@@ -1,0 +1,32 @@
+2023-11-15 14:19:35,217 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:19:43,055 INFO: Creating directory for bucket: Data/l640-test-bucket
+2023-11-15 14:19:43,655 INFO: Creating directory for bucket: Data/l640-test-bucket-01
+2023-11-15 14:19:44,080 INFO: Creating directory for bucket: Data/l640-test-bucket-02
+2023-11-15 14:19:51,365 INFO: Creating directory for bucket: Data/l640-test-bucket-03
+2023-11-15 14:19:52,020 INFO: Creating directory for bucket: Data/l640-test-bucket-04
+2023-11-15 14:19:52,420 INFO: l640-test-bucket-05 is empty, skipping... 
+
+2023-11-15 14:19:52,487 INFO: Script Complete! 
+
+2023-11-15 14:21:20,763 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:22:03,366 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:23:52,642 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:23:53,167 INFO: Script Complete! 
+
+2023-11-15 14:25:41,348 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:25:41,817 INFO: Script Complete! 
+
+2023-11-15 14:26:05,497 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:26:06,478 INFO: Script Complete! 
+
+2023-11-15 14:33:54,026 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:33:55,067 INFO: Script Complete! 
+
+2023-11-15 14:37:53,584 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:37:54,170 INFO: Script Complete! 
+
+2023-11-15 14:38:47,888 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 14:38:57,511 INFO: l640-test-bucket-05 is empty, skipping... 
+
+2023-11-15 14:38:57,511 INFO: Script Complete! 
+

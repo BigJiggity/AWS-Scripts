@@ -22,15 +22,16 @@ check_date: date = date(2018, 12, 31)
 if not os.path.exists('Data'):
         os.makedirs('Data')
 
-def scan_buckets(buckets):
-    # s3 = boto3.resource('s3')
- 
-    ## set object counter / set csv count
+def scan_buckets(buckets: list) -> None:
+   
+    ## set object counter / set csv count / csv data list
     object_count = 0
     csv_count = 1
+    csv_data = []
     
     ## Iterate through buckets, set objects list    
     for bucket in buckets:
+        print(bucket)
         objects = list(bucket.objects.all())
                                     
         if not objects:
@@ -75,26 +76,26 @@ def scan_buckets(buckets):
                             csv_count += 1
                             csv_data = []  
                                     
-        ## Create next csv file
-        if csv_data:
-            csv_file = os.path.join(subdirectory, f'{bucket.name}_{csv_count}.csv') 
-            with open (csv_file, 'w', newline='') as file:
-                        csv_writer = csv.writer(file)
-                        header: list[str] = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
-                        csv_writer.writerow(header)
-                        csv_writer.writerows(csv_data)
-                        
-                        logging.info('Writing file: %s \n', csv_file)
+                ## Create next csv file
+                if csv_data:
+                    csv_file = os.path.join(subdirectory, f'{bucket.name}_{csv_count}.csv') 
+                    with open (csv_file, 'w', newline='') as file:
+                                csv_writer = csv.writer(file)
+                                header: list[str] = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
+                                csv_writer.writerow(header)
+                                csv_writer.writerows(csv_data)
+                                
+                                logging.info('Writing file: %s \n', csv_file)
                     
                 
-        threads = []
-        for bucket in s3.buckets.all():
-            t = threading.Thread(target=scan_buckets, args=(bucket,))
-            threads.append(t)
-            t.start()
+        # threads = []
+        # for bucket in buckets:
+        #     t = threading.Thread(target=scan_buckets, args=(bucket,))
+        #     threads.append(t)
+        #     t.start()
 
-        for t in threads:
-            t.join()
+        # for t in threads:
+        #     t.join()
 
 if __name__ == "__main__":
         
