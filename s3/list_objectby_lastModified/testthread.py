@@ -9,8 +9,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 def thread_buckets():
     
-    
-    
     # Create an S3 resource
     s3 = boto3.resource('s3')
     
@@ -25,6 +23,9 @@ def thread_buckets():
     for bucket in buckets:
         executor.submit(scan_buckets, bucket)
     
+        global bucket_name
+        bucket_name = bucket.name
+        
     # Wait for all threads to complete
     executor.shutdown(wait=True)
     
@@ -32,7 +33,7 @@ def thread_buckets():
 
 def scan_buckets(bucket):
     
-    logging.info("begining bucket scan... %s", bucket.name)
+    logging.info("begining bucket scan... %s", bucket_name)
     
     ## set variables/lists
     object_count = 0
