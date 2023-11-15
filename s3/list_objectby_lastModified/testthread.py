@@ -41,9 +41,6 @@ def scan_buckets(bucket):
     csv_data = []
     check_date: date = date(2018, 12, 31)
     
-    # Set up logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    
     for bucket in buckets:
        
         # Get all objects in the bucket
