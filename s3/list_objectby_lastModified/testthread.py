@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+################### thread buckets function #######################################################
 def thread_buckets():
     
     # Create an S3 resource
@@ -31,6 +32,7 @@ def thread_buckets():
     
     logging.info("Script completed.")
 
+#################### scan buckets function ######################################################
 def scan_buckets(bucket):
     
     logging.info("begining bucket scan... %s", bucket_name)
@@ -88,6 +90,7 @@ def scan_buckets(bucket):
             logging.info('Writing file: %s \n', csv_file)
         
         logging.info(f"Scanning of bucket {bucket.name} completed. \n")
+##########################################################################
 
 # Run the function
 thread_buckets()
