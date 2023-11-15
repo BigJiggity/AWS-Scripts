@@ -23,7 +23,7 @@ if not os.path.exists('Data'):
         os.makedirs('Data')
 
 def scan_buckets():
-    s3 = boto3.resource('s3')
+    # s3 = boto3.resource('s3')
  
     ## set object counter / set csv count
     object_count = 0
@@ -95,4 +95,16 @@ def scan_buckets():
 
         for t in threads:
             t.join()
+
+if __name__ == "__main__":
+        
+    try:
+            ## Create resource
+            s3 = boto3.resource('s3')
+    except Exception as e:
+            logging.error("Error creating S3 resource. Error: %s \n", e)
+            sys.exit(1)
+    buckets = s3.buckets.all()
+    scan_buckets(buckets)
+    logging.info("Script Complete! \n")
     
