@@ -4,9 +4,12 @@ import logging
 from datetime import date
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 def thread_buckets():
-    # Set up logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    
+    
     
     # Create an S3 resource
     s3 = boto3.resource('s3')
