@@ -22,7 +22,7 @@ check_date: date = date(2018, 12, 31)
 if not os.path.exists('Data'):
         os.makedirs('Data')
 
-def scan_buckets():
+def scan_buckets(buckets):
     # s3 = boto3.resource('s3')
  
     ## set object counter / set csv count
@@ -30,7 +30,7 @@ def scan_buckets():
     csv_count = 1
     
     ## Iterate through buckets, set objects list    
-    for bucket in s3.buckets.all():
+    for bucket in buckets:
         objects = list(bucket.objects.all())
                                     
         if not objects:
