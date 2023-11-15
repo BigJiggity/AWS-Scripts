@@ -31,7 +31,7 @@ def scan_buckets(buckets: list) -> None:
     
     ## Iterate through buckets, set objects list    
     for bucket in buckets:
-        print(bucket)
+        
         objects = list(bucket.objects.all())
                                     
         if not objects:
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     except Exception as e:
             logging.error("Error creating S3 resource. Error: %s \n", e)
             sys.exit(1)
-    buckets = s3.buckets.all()
+    buckets = list(s3.buckets.all())
     scan_buckets(buckets)
     logging.info("Script Complete! \n")
     
