@@ -22,9 +22,9 @@ def thread_buckets():
     
     # Iterate through each bucket
     for bucket in buckets:
-        logging.info('Starting thread for bucket: %s', bucket.name)
+        logging.info('Starting thread for bucket: %s \n', bucket.name)
         executor.submit(scan_buckets, bucket)
-        logging.info('Finished thread')
+        logging.info('Finished thread \n')
         
     # Wait for all threads to complete
     executor.shutdown(wait=True)
@@ -34,21 +34,21 @@ def thread_buckets():
 #################### scan buckets function ######################################################
 def scan_buckets(bucket):
     
+    logging.info("begining function scan_buckets")
     # Get all objects in the bucket
     objects = list(bucket.objects.all())
+    
     
     ## set variables/lists
     object_count = 0
     csv_count = 1
     csv_data = []
     check_date: date = date(2018, 12, 31)
-    
-    logging.info("begining function scan_buckets")
-    
+
     if not objects:
         logging.info('%s is empty, skipping... \n', bucket.name)
         return
-    
+
     else:
         # Iterate through each object
         for obj in objects:
@@ -57,7 +57,7 @@ def scan_buckets(bucket):
             object_count += 1 
 
             # Check if the object is over 4 years old
-            if obj.last_modified < check_date:
+            if obj.last_modified >= check_date:
                 
                 ## define variables for data rows
                 csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
