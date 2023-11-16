@@ -1,11 +1,18 @@
 import boto3
 import csv
 import logging
+import sys
 from datetime import date
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+## Setup logging config
+logging.basicConfig( 
+    format='%(asctime)s %(levelname)s: %(message)s', 
+    level=logging.INFO, handlers=[
+        logging.FileHandler("s3_scan_log.txt"),
+        logging.StreamHandler(sys.stdout)
+        ]
+    )
 
 def thread_buckets():
     # Create an S3 resource

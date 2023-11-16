@@ -7,7 +7,6 @@ import sys
 import os
 
 from datetime import date
-from multiprocessing import Pool
 
 ## Setup logging config
 logging.basicConfig( 
@@ -48,7 +47,6 @@ def get_bucket_data(buckets: list) -> None:
             folder_path = os.path.join(data_dir, bucket.name)
             
             if os.path.exists(folder_path): 
-                
                 logging.info("folder for %s already exists, skipping...", bucket.name)
                 skip_buckets.append(bucket.name)
 
@@ -133,9 +131,6 @@ if __name__ == "__main__":
                 sys.exit(1)
         buckets = s3.buckets.all()
 
-        with Pool() as pool:
-            pool.map(get_bucket_data, buckets)
-
-        #get_bucket_data(buckets)
+        get_bucket_data(buckets)
         
         logging.info("Script Complete! \n")
