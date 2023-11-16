@@ -1,0 +1,73 @@
+2023-11-15 18:44:06,726 INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2023-11-15 18:44:07,573 INFO: Getting data for bucket: l640-test-bucket-04
+2023-11-15 18:44:07,574 INFO: Created: Data/l640-test-bucket-04... 
+2023-11-15 18:44:07,574 INFO: Processing Bucket...: l640-test-bucket-04
+2023-11-15 18:44:07,587 INFO: Getting data for bucket: l640-test-bucket-02
+2023-11-15 18:44:07,587 INFO: Created: Data/l640-test-bucket-02... 
+2023-11-15 18:44:07,587 INFO: Processing Bucket...: l640-test-bucket-02
+2023-11-15 18:44:07,598 INFO: Getting data for bucket: l640-test-bucket-01
+2023-11-15 18:44:07,598 INFO: Created: Data/l640-test-bucket-01... 
+2023-11-15 18:44:07,598 INFO: Processing Bucket...: l640-test-bucket-01
+2023-11-15 18:44:07,666 INFO: Writing file: Data/l640-test-bucket-04/l640-test-bucket-04_1.csv 
+
+2023-11-15 18:44:07,672 INFO: Writing file: Data/l640-test-bucket-01/l640-test-bucket-01_1.csv 
+
+2023-11-15 18:44:07,710 INFO: Writing file: Data/l640-test-bucket-02/l640-test-bucket-02_1.csv 
+
+2023-11-15 18:44:10,826 INFO: Getting data for bucket: l640-test-bucket-03
+2023-11-15 18:44:10,833 INFO: Created: Data/l640-test-bucket-03... 
+2023-11-15 18:44:10,833 INFO: Processing Bucket...: l640-test-bucket-03
+2023-11-15 18:44:10,902 INFO: Getting data for bucket: l640-test-bucket
+2023-11-15 18:44:10,903 INFO: Created: Data/l640-test-bucket... 
+2023-11-15 18:44:10,903 INFO: Processing Bucket...: l640-test-bucket
+2023-11-15 18:44:11,102 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_1.csv 
+
+2023-11-15 18:44:11,167 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_1.csv 
+
+2023-11-15 18:44:11,352 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_2.csv 
+
+2023-11-15 18:44:11,461 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_2.csv 
+
+2023-11-15 18:44:11,595 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_3.csv 
+
+2023-11-15 18:44:11,978 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_4.csv 
+
+2023-11-15 18:44:11,983 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_3.csv 
+
+2023-11-15 18:44:12,309 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_4.csv 
+
+2023-11-15 18:44:12,409 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_5.csv 
+
+2023-11-15 18:44:12,572 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_5.csv 
+
+2023-11-15 18:44:12,678 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_6.csv 
+
+2023-11-15 18:44:13,002 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_7.csv 
+
+2023-11-15 18:44:13,042 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_6.csv 
+
+2023-11-15 18:44:13,459 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_7.csv 
+
+2023-11-15 18:44:13,507 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_8.csv 
+
+2023-11-15 18:44:13,929 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_9.csv 
+
+2023-11-15 18:44:13,967 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_8.csv 
+
+2023-11-15 18:44:14,261 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_9.csv 
+
+2023-11-15 18:44:14,281 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_10.csv 
+
+2023-11-15 18:44:14,477 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_11.csv 
+
+2023-11-15 18:44:14,558 INFO: Writing file: Data/l640-test-bucket-03/l640-test-bucket-03_12.csv 
+
+2023-11-15 18:44:14,588 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_10.csv 
+
+2023-11-15 18:44:14,963 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_11.csv 
+
+2023-11-15 18:44:15,037 INFO: Writing file: Data/l640-test-bucket/l640-test-bucket_12.csv 
+
+2023-11-15 18:44:15,038 INFO: Script Complete! 
+
+2023-11-15 18:44:15,038 INFO: Execution Time: 8.0560302734375 seconds
