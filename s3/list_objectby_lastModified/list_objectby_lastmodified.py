@@ -5,7 +5,7 @@ import logging
 import csv
 import sys
 import os
-
+import time
 from datetime import date
 
 ## Setup logging config
@@ -131,6 +131,10 @@ if __name__ == "__main__":
                 sys.exit(1)
         buckets = s3.buckets.all()
 
+        start_time = time.time()
         get_bucket_data(buckets)
-        
+        end_time = time.time()
+
+    
+        logging.info("Execution Time: %s seconds", end_time - start_time)
         logging.info("Script Complete! \n")

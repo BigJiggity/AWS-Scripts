@@ -5,6 +5,7 @@ import sys
 import os
 from datetime import date
 from concurrent.futures import ThreadPoolExecutor
+import time
 
 ## Setup logging config
 logging.basicConfig(
@@ -124,7 +125,10 @@ if __name__ == "__main__":
     buckets = s3.buckets.all()
 
     ## Multithreading to speed up S3 bucket scanning and writing of the CSV files
+    start_time = time.time()
     with ThreadPoolExecutor() as executor:
         executor.map(process_bucket, buckets)
+    end_time = time.time()
 
     logging.info("Script Complete! \n")
+    logging.info("Execution Time: %s seconds", end_time - start_time)
