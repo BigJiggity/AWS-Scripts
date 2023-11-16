@@ -15,7 +15,7 @@ def thread_buckets():
     buckets = list(s3.buckets.all())
     
     # Create a thread pool executor
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=100) as executor:
         # Iterate through each bucket
         for bucket in buckets:
             logging.info('Starting thread for bucket: %s \n', bucket.name)
