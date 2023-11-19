@@ -36,27 +36,24 @@ def process_bucket(bucket):
     Args:
         bucket (boto3.resources.factory.s3.Bucket): Bucket to process
     """
-    if sum(1 for _ in bucket.objects.all()) == 0:
-        skip_buckets.append(bucket.name)
-        return
-
+    
     ## check for bucket conditions to skip
     folder_path = os.path.join(data_dir, bucket.name)
 
     if os.path.exists(folder_path):
         logging.info("Folder for %s already exists, skipping...", bucket.name)
         skip_buckets.append(bucket.name)
+    
     else:
         ## Check if bucket is not in the skip_bucket list, process object data in bucket
         if bucket.name not in skip_buckets:
-            logging.info("Getting data for bucket: %s", bucket.name)
+            logging.info("Processing Bucket...: %s", bucket.name)
 
             ## Create directories for CSV's
             bucket_dir = os.path.join(data_dir, bucket.name)
             if not os.path.exists(bucket_dir):
                 os.makedirs(bucket_dir)
             logging.info("Created: %s... ", bucket_dir)
-            logging.info("Processing Bucket...: %s", bucket.name)
 
             ## Set defaults for object/csv/data
             object_count = 0
@@ -71,12 +68,12 @@ def process_bucket(bucket):
                 ## Convert last_modified time to year-month-day format
                 lstmod = obj.last_modified.date()
 
-                ## Conditional check for object lastmodified date being 3+ years old
-                if lstmod > CHECK_DATE:
+                ## Conditional check for object lastmodified date being 4+ years old
+                if lstmod < CHECK_DATE:
                     ## Define variables for data rows
                     csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
 
-                    ## Check if object count is at or below 10k
+                    ## Check if object count is at or below 1k
                     if object_count % 1000 == 0:
                         ## Create a CSV file for each bucket
                         csv_file = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
