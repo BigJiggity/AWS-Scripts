@@ -39,76 +39,70 @@ def process_bucket(bucket):
     
     ## check for bucket conditions to skip
     folder_path = os.path.join(data_dir, bucket.name)
-
-    if os.path.exists(folder_path):
-        logging.info("Folder for %s already exists, skipping...", bucket.name)
-        skip_buckets.append(bucket.name)
     
-    else:
-        ## Check if bucket is not in the skip_bucket list, process object data in bucket
-        if bucket.name not in skip_buckets:
-            logging.info("Processing Bucket...: %s", bucket.name)
+    ## Check if bucket is not in the skip_bucket list, process object data in bucket
+    if bucket.name not in skip_buckets:
+        logging.info("Processing Bucket...: %s", bucket.name)
 
-            ## Create directories for CSV's
-            bucket_dir = os.path.join(data_dir, bucket.name)
-            if not os.path.exists(bucket_dir):
-                os.makedirs(bucket_dir)
-            logging.info("Created: %s... ", bucket_dir)
+        ## Create directories for CSV's
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        logging.info("Created: %s... ", folder_path)
 
-            ## Set defaults for object/csv/data
-            object_count = 0
-            csv_count = 1
-            csv_data = []
+        ## Set defaults for object/csv/data
+        object_count = 0
+        csv_count = 1
+        csv_data = []
 
-            ## Iterate/Process through Objects
-            for obj in bucket.objects.all():
-                ## Iterate Objects
-                object_count += 1
+        ## Iterate/Process through Objects
+        for obj in bucket.objects.all():
+            ## Iterate Objects
+            object_count += 1
 
-                ## Convert last_modified time to year-month-day format
-                lstmod = obj.last_modified.date()
+            ## Convert last_modified time to year-month-day format
+            lstmod = obj.last_modified.date()
 
-                ## Conditional check for object lastmodified date being 4+ years old
-                if lstmod < CHECK_DATE:
-                    ## Define variables for data rows
-                    csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
+            ## Conditional check for object lastmodified date being 4+ years old
+            if lstmod < CHECK_DATE:
+                ## Define variables for data rows
+                csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
 
-                    ## Check if object count is at or below 1k
-                    if object_count % 1000 == 0:
-                        ## Create a CSV file for each bucket
-                        csv_file = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
+                ## Check if object count is at or below 1k
+                if object_count % 1000 == 0:
+                    ## Create a CSV file for each bucket
+                    csv_file = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
 
-                        ## Open CSV in write mode
-                        with open(csv_file, 'w', newline='') as file:
-                            csv_writer = csv.writer(file)
+                    ## Open CSV in write mode
+                    with open(csv_file, 'w', newline='') as file:
+                        csv_writer = csv.writer(file)
 
-                            ## Define values for header row
-                            header = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
+                        ## Define values for header row
+                        header = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
 
-                            ## Write Header to csv
-                            csv_writer.writerow(header)
+                        ## Write Header to csv
+                        csv_writer.writerow(header)
 
-                            ## Write Data to csv
-                            csv_writer.writerows(csv_data)
+                        ## Write Data to csv
+                        csv_writer.writerows(csv_data)
 
-                            logging.info('Writing file: %s \n', csv_file)
+                        logging.info('Writing file: %s \n', csv_file)
 
-                            ## Increment csv count, clear data
-                            csv_count += 1
-                            csv_data = []
+                        ## Increment csv count, clear data
+                        csv_count += 1
+                        csv_data = []
 
-            ## Define values for header row
-            header = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
+        ## Define values for header row
+        header = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
 
-            ## Create next csv file
-            if csv_data:
-                csv_file = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
-                with open(csv_file, 'w', newline='') as file:
-                    csv_writer = csv.writer(file)
-                    csv_writer.writerow(header)
-                    csv_writer.writerows(csv_data)
+        ## Create next csv file
+        if csv_data:
+            csv_file = os.path.join(bucket_dir, f'{bucket.name}_{csv_count}.csv')
+            with open(csv_file, 'w', newline='') as file:
+                csv_writer = csv.writer(file)
+                csv_writer.writerow(header)
+                csv_writer.writerows(csv_data)
 
-                    logging.info('Writing file: %s \n', csv_file)
+                logging.info('Writing file: %s \n', csv_file)
 
 
 if __name__ == "__main__":
