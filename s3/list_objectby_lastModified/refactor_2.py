@@ -17,9 +17,7 @@ logging.basicConfig(
     ]
 )
 
-#Variables
 # Set date for how far back you want to check
-# Set State file 
 checkdate_1: date = date(2018, 12, 31)
 checkdate_2: date = date(2020, 1, 1)
 state_file = 'state.txt'
@@ -74,7 +72,7 @@ def process_bucket(bucket):
         # Convert last_modified time to year-month-day format
         lstmod = obj.last_modified.date()
 
-        # Conditional check for object last modified date being between 2020 and 2018 ## and lstmod < checkdate_2
+        # Conditional check for object last modified date being between 2020 and 2018
         if lstmod > checkdate_1:
 
             # Define variables for data rows
@@ -121,19 +119,20 @@ def process_bucket(bucket):
 
 def check_state_file(state_file):
     if not os.path.exists(state_file):
-        pass
+        return False
+    return True
 
 def read_state_file(state_file):
     try:
         with open(state_file, 'r') as file:
             last_bucket, last_object = file.read().split(',')
+            return last_bucket, last_object
     except FileNotFoundError:
-        pass
+        return None, None
 
 def update_state_file(state_file, bucket, obj):
     with open(state_file, 'w') as file:
-                file.write(f'{bucket.name},{obj.key}')
-    pass
+        file.write(f'{bucket},{obj}')
 
 if __name__ == "__main__":
     try:
