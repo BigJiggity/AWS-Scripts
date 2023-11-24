@@ -73,7 +73,7 @@ def process_bucket(bucket):
         lstmod = obj.last_modified.date()
 
         # Conditional check for object last modified date being between 2020 and 2018
-        if lstmod > checkdate_1 and lstmod < checkdate_2:
+        if checkdate_1 < lstmod < checkdate_2:
 
             # Define variables for data rows
             csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
@@ -118,9 +118,7 @@ def process_bucket(bucket):
 
 
 def check_state_file(state_file):
-    if not os.path.exists(state_file):
-        return False
-    return True
+    return os.path.exists(state_file)
 
 def read_state_file(state_file):
     try:
