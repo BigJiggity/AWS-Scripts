@@ -3,7 +3,7 @@ import logging
 import csv
 import sys
 import os
-from datetime import date
+#from datetime import date
 from concurrent.futures import ThreadPoolExecutor
 import time
 
@@ -18,8 +18,8 @@ logging.basicConfig(
 )
 
 # Set date for how far back you want to check
-checkdate_1: date = date(2018, 12, 31)
-checkdate_2: date = date(2020, 1, 1)
+#checkdate_1: date = date(2018, 12, 31)
+#checkdate_2: date = date(2020, 1, 1)
 state_file = 'state.txt'
 
 # Check if Data Directory exists, if not create data folder
@@ -70,38 +70,38 @@ def process_bucket(bucket):
         object_count += 1
 
         # Convert last_modified time to year-month-day format
-        lstmod = obj.last_modified.date()
+       # lstmod = obj.last_modified.date()
 
         # Conditional check for object last modified date being between 2020 and 2018
-        if checkdate_1 < lstmod < checkdate_2:
+        #if checkdate_1 < lstmod < checkdate_2:
 
-            # Define variables for data rows
-            csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
+        # Define variables for data rows
+        csv_data.append([bucket.name, obj.key, obj.size, obj.last_modified, obj.storage_class])
 
-            # Check if object count is at or below 1k
-            if object_count % 1000 == 0:
+        # Check if object count is at or below 1k
+        if object_count % 1000 == 0:
 
-                # Create a CSV file for each bucket
-                csv_file = os.path.join(folder_path, f'{bucket.name}_{csv_count}.csv')
+            # Create a CSV file for each bucket
+            csv_file = os.path.join(folder_path, f'{bucket.name}_{csv_count}.csv')
 
-                # Open CSV in write mode
-                with open(csv_file, 'w', newline='') as file:
-                    csv_writer = csv.writer(file)
+            # Open CSV in write mode
+            with open(csv_file, 'w', newline='') as file:
+                csv_writer = csv.writer(file)
 
-                    # Define values for header row
-                    header = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
+                # Define values for header row
+                header = ['Bucket Name', 'File_Name', 'File Size', 'Last_Modified_Date', 'Storage Class']
 
-                    # Write Header to CSV
-                    csv_writer.writerow(header)
+                # Write Header to CSV
+                csv_writer.writerow(header)
 
-                    # Write Data to CSV
-                    csv_writer.writerows(csv_data)
+                # Write Data to CSV
+                csv_writer.writerows(csv_data)
 
-                    logging.info('Writing file: %s \n', csv_file)
+                logging.info('Writing file: %s \n', csv_file)
 
-                    # Increment CSV count, clear data
-                    csv_count += 1
-                    csv_data = []
+                # Increment CSV count, clear data
+                csv_count += 1
+                csv_data = []
 
     # Update the state file with the current bucket and object
     update_state_file(state_file, bucket.name, obj.key)
